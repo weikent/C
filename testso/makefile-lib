@@ -1,0 +1,11 @@
+all : my.so
+SRC = getdate.c gettime.c
+TGT = %(SRC:.c=.o)
+$(SRC) : datetime.h
+       @touch $@
+
+%.o : %.c
+    cc -c &?
+
+my.so : $(TGT)
+cc -shared -o &@ &(TGT)

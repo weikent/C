@@ -1,0 +1,27 @@
+CROSS_COMPILE =
+PREFIX = $(CROSS_COMPILE)
+CC = $(PREFIX)g++
+
+CCFLAGS = -g3 -Wall -o0
+LD = $(CC)
+LDFLAGS = -lpthread
+
+RM = rm -f
+
+SOURCES_CPP = msgrcv_data.cpp Thread.cpp test_msgrcv_data.cpp
+OBJECTS = $(SOURCES_CPP:%.cpp=%.o)
+
+all: test_msgrcv_data
+.PHONY : all
+
+%.o: %.cpp
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+test_msgrcv_data : $(OBJECTS)
+	# $(LD) $(LDFLAGS) -o test_msgrcv_data $(OBJECTS)
+	$(LD) -o test_msgrcv_data $(OBJECTS) $(LDFLAGS)
+
+.PHONY : clean cleanall
+clean:
+	$(RM) *.o test_msgrcv_data
+
