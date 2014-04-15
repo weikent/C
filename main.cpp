@@ -1,10 +1,25 @@
-/* 
- *     Created:  07  8月 2013 16:21:02
- *     Author:   weishijian@weishijian-MacUbuntu
-       Description:  
+/*
+ * =====================================================================================
+ *
+ *    Filename:  main.cpp
+ *
+ * Description:  此函数用来测试如何设置系统时间
+ *
+ *    
+ *
+ *     Version:  0.1
+ *     Created:  Tue Apr 15 16:30:10 2014
+ *
+ *     Authors:  世建 魏 ,  
+ *     Company:  DingQing Technology, Ltd.
+ *    Revision:  
+ * ======================================================================================
+ * @0.1   世建 魏  Tue Apr 15 16:30:10 2014 , create orignal file
+ * ======================================================================================
+ * Copyright (c) , DingQing Technology, Ltd.
+ * ======================================================================================
  */
 
-//#include <config.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
