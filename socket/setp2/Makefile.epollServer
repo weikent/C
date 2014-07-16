@@ -1,0 +1,55 @@
+### Makefile --- 
+
+## Author: weikent@ubuntu
+## Version: $Id: Makefile,v 0.0 2014/07/14 06:13:11 weikent Exp $
+## Keywords: 
+## X-URL: 
+
+
+
+CC = gcc
+CXX = g++
+
+VPATH = 
+INCLUDE = 
+WALL = -Wall
+C99 = #-std=c99
+THREAD = -lpthread
+OPTIMIZE = -O2
+
+SOURCECPP =
+
+SOURCEC = epollServer.c
+
+OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
+
+OBJECTSC = $(SOURCEC:%.c=%.o)
+
+OBJS = $(OBJECTSC) $(OBJECTSCPP)
+
+
+TARGET = epollServer
+
+.PHONY = all
+.PHONY = clean
+all = clean $(TARGET)
+
+%.o : %.c
+	$(CC) -c $(WALL)  $< -o $@ $(INCLUDE) $(C99)
+
+%.o : %.cpp
+	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
+
+$(TARGET): $(OBJECTSC) $(OBJECTSCPP)
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP)  $(THREAD) $(OPTIMIZE) $(C99)
+
+
+clean:
+	rm $(OBJS) $(TARGET)
+
+install:
+#	cp *.h *.cpp *.c -r ../wpa
+
+
+
+### Makefile ends here
