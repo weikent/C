@@ -52,11 +52,17 @@
 
 /*-------------Definitions---------------*/ 
 //一些#defines及具体的函数实现
-#define serverIP "127.0.0.1"
-#define serverPort 0x8888
+#define serverIP "115.28.79.70"
+#define serverPort 14567
 
 int main(int argc, char *argv[])
 {
+    if (argc < 3)
+    {
+        printf ("must input serverip and serverport\n");
+        return 0;
+    }
+
 
     int g_iClientModelTCPSocket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -69,8 +75,8 @@ int main(int argc, char *argv[])
             
     bzero(&s_add,sizeof(struct sockaddr_in));
     s_add.sin_family=AF_INET;
-    inet_pton(AF_INET, serverIP, &s_add.sin_addr);
-    s_add.sin_port=htons(serverPort); 
+    inet_pton(AF_INET, argv[1], &s_add.sin_addr);
+    s_add.sin_port=htons(atoi(argv[2])); 
 
 
     struct timeval timeout = {5,0};
@@ -115,9 +121,17 @@ int main(int argc, char *argv[])
         else
         {
             printf ("Success\n");
-            sleep(2);
-            goto reWrite;
+//            sleep(2);
+//            goto reWrite;
         }
+
+        unsigned char bufread[100] = {0};
+        read(g_iClientModelTCPSocket, bufread, 20);
+        printf ("%s\n", bufread);
+
+        goto reWrite;
+        close(g_iClientModelTCPSocket);
+
     }
     return 0;
 }

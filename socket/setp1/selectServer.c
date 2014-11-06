@@ -56,7 +56,7 @@
 
 #define BACKLOG 100
 #define BUF_SIZE 1024
-#define MYPORT 0x8888
+#define MYPORT 14567
 
 
 int main(int argc, char *argv[])
@@ -183,7 +183,11 @@ int main(int argc, char *argv[])
                 {
                     printf ("buffer = %s\n",buf);
                 }
+
+
+                send(fd_A[i], "~000588888", 10, 0);
             }
+
         }
 
 
