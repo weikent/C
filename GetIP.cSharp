@@ -1,0 +1,49 @@
+private void GetIP()
+        {
+            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (NetworkInterface adapter in nics)
+            {
+                //判断是否为以太网卡
+                //Wireless80211         无线网卡    Ppp     宽带连接
+                //Ethernet              以太网卡   
+                //这里篇幅有限贴几个常用的，其他的返回值大家就自己百度吧！
+
+                if (adapter.NetworkInterfaceType == NetworkInterfaceType.Ethernet && adapter.Name == "以太网")
+                {
+                    //获取以太网卡网络接口信息
+                    IPInterfaceProperties ip = adapter.GetIPProperties();
+                    //获取单播地址集
+                    UnicastIPAddressInformationCollection ipCollection = ip.UnicastAddresses;
+                    foreach (UnicastIPAddressInformation ipadd in ipCollection)
+                    {
+                        //InterNetwork    IPV4地址      InterNetworkV6        IPV6地址
+                        //Max            MAX 位址
+                        if (ipadd.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        //判断是否为ipv4
+                        {
+
+                            string strLocalIP = ipadd.Address.ToString();//获取ip
+                           // return strLocalIP;//获取ip
+
+                        }
+                    }
+                }
+            }
+
+
+
+            string hostName = Dns.GetHostName();//本机名   
+            //System.Net.IPAddress[] addressList = Dns.GetHostByName(hostName).AddressList;//会警告GetHostByName()已过期，   //我运行时且只返回了一个IPv4的地址   
+            System.Net.IPAddress[] addressList = Dns.GetHostAddresses(hostName);//会返回所有地址，包括IPv4和IPv6   
+
+            
+            foreach (IPAddress ip in addressList)
+            {
+                //listBox1.Items.Add(ip.ToString());
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+this.addTextInRichBox(ip.ToString());
+                }
+                
+            }
+        }  
