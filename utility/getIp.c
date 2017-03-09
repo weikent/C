@@ -1,7 +1,6 @@
 /* 
  *     Created:  26  7月 2013 13:59:07
  *     Author:   weishijian@weishijian-MacUbuntu
-       Description:  
  */
 
 //#include <config.h>
