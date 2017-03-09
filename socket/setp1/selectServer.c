@@ -56,7 +56,7 @@
 
 #define BACKLOG 100
 #define BUF_SIZE 1024
-#define MYPORT 14567
+#define MYPORT 1883
 
 
 int main(int argc, char *argv[])
