@@ -21,11 +21,7 @@
 #include "socketSerialPort.h"
 
 
-
-
-
-
-int main(int argc, char *argv[])
+void init()
 {
   msgID = create_dataQueue();
   debug_msg("msgID = %d", msgID);
@@ -36,9 +32,13 @@ int main(int argc, char *argv[])
 
 
   init_serial();
+}
 
 
 
+
+int main(int argc, char *argv[])
+{
   /* char command[20] = {0}; */
   /* char type[2] = {0}; */
   /* char text[100] = {0}; */
