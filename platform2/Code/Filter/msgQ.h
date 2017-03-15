@@ -9,14 +9,15 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include "global.h"
+#include "../../common/message.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-  void send_message(int qid, struct mymsgbuf *qbuf, long type, char *text);
-  void read_message(int qid, struct mymsgbuf *qbuf, long type);
+  void send_message(int qid, struct myMsgBuf *qbuf, long type, char *text);
+  void read_message(int qid, struct myMsgBuf *qbuf, long type);
   int create_dataQueue();
 #ifdef __cplusplus
 }

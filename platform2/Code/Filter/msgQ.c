@@ -47,13 +47,13 @@
 //一些#defines及具体的函数实现
 
 
-void send_message(int qid, struct mymsgbuf *qbuf, long type, char *text)
+void send_message(int qid, struct myMsgBuf *qbuf, long type, char *text)
 {
   printf ("Sending a message....\n");
   qbuf->msg_type = type;
   strcpy(qbuf->msg_text, text);
 
-  if ((msgsnd(qid, (struct msgbuf *)qbuf,strlen(qbuf->msg_text) + 1, 0)) == -1)
+  if ((msgsnd(qid, (struct myMsgBuf *)qbuf,strlen(qbuf->msg_text) + 1, 0)) == -1)
     {
       perror("msgsend");
       exit(1);
@@ -61,7 +61,7 @@ void send_message(int qid, struct mymsgbuf *qbuf, long type, char *text)
 }
 
 
-void read_message(int qid, struct mymsgbuf *qbuf, long type)
+void read_message(int qid, struct myMsgBuf *qbuf, long type)
 {
   printf ("Reading a message....\n");
   qbuf->msg_type = type;

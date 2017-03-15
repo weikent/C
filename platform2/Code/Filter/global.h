@@ -41,14 +41,10 @@ extern sem_t g_semHasCommand;
 
 
 #define SERIAL_PORT "/dev/ttyS0"
-#define MAX_MSG_TEXT_SIZE 10000 // 消息队列多能传送的最大字符串
+
 #define MAX_SERIAL_MSG_SIZE 100 // 串口所能接收的最大字符
 #define MY_MSG_TYPE 3           // 这个程序的消息队列的type
 
-typedef struct myMsgBuf {
-  long msg_type;
-  char msg_text[TEXT_SIZE];
-} MsgData;
 extern int msgID;
 
 #endif /* GLOBAL_H */

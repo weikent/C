@@ -44,7 +44,7 @@
 
 int serial_fd = 0;
 
-int baudRete = 57600
+int baudRete = 57600;
 
 
 //打开串口并初始化设置
