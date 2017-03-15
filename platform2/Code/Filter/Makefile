@@ -1,24 +1,44 @@
-CC=gcc
+### Makefile --- 
 
-INCLUDE=
-RM=rm -f
-WALL= -Wall
-PTHREAD= #-lpthread
+## Author: weishijian@weikents-Air.lan
+## Version: $Id: Makefile,v 0.0 2017/03/15 05:13:02 weishijian Exp $
+## Keywords: 
+## X-URL: 
 
-SOURCEC=main.c socketSerialPort.c global.c msgQ.c
 
-SOURCECPP=
 
-OBJECTSC=$(SOURCEC:%.c=%.o)
-OBJECTSCPP=$(SOURCECPP:%.cpp=%.o)
+
+
+
+CC = gcc
+CXX = g++
+VPATH = 
+INCLUDE = 
+WALL = -Wall
+C99 = #-std=c99
+THREAD = -lpthread
+OPTIMIZE = -O2
+
+
+
+SOURCECPP =
+
+SOURCEC =
+
+OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
+
+OBJECTSC = $(SOURCEC:%.c=%.o)
 
 OBJS = $(OBJECTSC) $(OBJECTSCPP)
 
-TARGET=test
+
+TARGET = 
 
 .PHONY = all
 .PHONY = clean
-all: clean $(TARGET)
+all :
+	$(MAKE) -f Makefile.Filter
+	$(MAKE) -f Makefile.test
 
 %.o : %.c
 	$(CC) -c $(WALL)  $< -o $@ $(INCLUDE) $(C99)
@@ -27,15 +47,44 @@ all: clean $(TARGET)
 	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
 
 $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
-	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP)  $(PTHREAD) -lm -O2 $(C99)
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99)
 
 
 clean:
-#	rm $(OBJECTSC) $(OBJECTSCPP) $(TARGET)
-	$(RM) $(OBJS) $(TARGET)
+	$(MAKE) clean -f Makefile.Filter
+	$(MAKE) clean -f Makefile.test
 
 install:
 #	cp *.h *.cpp *.c -r ../wpa
 
 
-main:$(TARGET)
+
+
+# .PHONY : all
+
+# all :
+# 	$(MAKE) clean -f Makefile.local_ctrl
+# 	$(MAKE) clean -f Makefile.manual_ctrl
+# 	$(MAKE) rebuild -f Makefile.local_ctrl
+# 	$(MAKE) rebuild -f Makefile.manual_ctrl
+# 	cp local_ctrl combo_wireless
+# 	cp manual_ctrl combo_wireless
+# 	cp -rf combo_wireless/call_perform_firmware_update.sh ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/cfg.ini ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/cfg.ini.default ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/check_firmware_update.sh ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/cron_firmware_update ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/gen_formal_update_package.sh ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/gen_test_update_package.sh ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/local_ctrl ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/manual_ctrl ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/perform_firmware_update.sh ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/rcS.update ../../../publish_Package/Wireless
+# 	cp -rf combo_wireless/start_isockets.sh ../../../publish_Package/Wireless
+
+# clean :
+# 	$(MAKE) clean -f Makefile.local_ctrl
+# 	$(MAKE) clean -f Makefile.manual_ctrl
+
+
+### Makefile ends here
