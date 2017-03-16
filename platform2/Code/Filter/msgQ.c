@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "global.h"
+
 /*------------Local Variables----------- */ 
 //定义一些本地变量 
 
@@ -49,11 +51,11 @@
 
 void send_message(int qid, struct myMsgBuf *qbuf, long type, char *text)
 {
-  printf ("Sending a message....\n");
+  debug_msg("Sending a message....\n");
   qbuf->msg_type = type;
   strcpy(qbuf->msg_text, text);
 
-  printf("strlen = %d\n", strlen(qbuf->msg_text) + sizeof(long int));
+  debug_msg("strlen = %d\n", strlen(qbuf->msg_text) + sizeof(long int));
 
   if ((msgsnd(qid, (struct myMsgBuf *)qbuf,strlen(qbuf->msg_text) + sizeof(long int), 0)) == -1)
     {
@@ -65,7 +67,7 @@ void send_message(int qid, struct myMsgBuf *qbuf, long type, char *text)
 
 void read_message(int qid, struct myMsgBuf *qbuf, long type)
 {
-  printf ("Reading a message....\n");
+  debug_msg("Reading a message....\n");
   qbuf->msg_type = type;
   //  msgrcv(qid, (struct myMsgBuf *) qbuf, MAX_MSG_TEXT_SIZE + 8, type , 0);
   msgrcv(qid, (struct myMsgBuf *) qbuf, sizeof(struct myMsgBuf) - sizeof(long int), type , 0);
@@ -84,7 +86,7 @@ int create_dataQueue()
     {
       return -1;
     }
-  //    printf("queue_id= %d", msgqueue_id);
+  debug_msg("queue_id= %d", msgqueue_id);
 
   return msgqueue_id;
 }

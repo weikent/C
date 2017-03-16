@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
 
     read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE);
 
-    debug_msg("the message is : %s", msgReadMsgBuf.msg_text);
+    debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type);
     bzero(buf, MAX_SERIAL_MSG_SIZE + 1);
-    uart_send(serial_fd, msgReadMsgBuf.msg_text, 1); /* TODO:  替换成实际需要的命令， */
+    uart_send(serial_fd, msgReadMsgBuf.msg_text, 1); /* TODO:  需要先解析消息队列中的信息，然后再发送 */
 
     sem_post(&g_semHasCommand);
     sem_wait(&g_semNeedWait);
@@ -73,6 +73,11 @@ int main(int argc, char *argv[])
     buf[len+1] = '\0';
     debug_msg("buf = %s\n", buf);
 
+    int sender = msgReadMsgBuf.sender_type;
+    msgReadMsgBuf.sender_type = MY_MSG_TYPE;
+    strncpy(msgReadMsgBuf.msg_text, buf, len);
+    msgReadMsgBuf.msg_type = sender;
+    send_message(msgID, &msgReadMsgBuf, sender, buf);
     /* TODO:  解析此buf， */
     /* TODO:  send msg */
   }
