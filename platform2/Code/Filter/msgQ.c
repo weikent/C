@@ -53,7 +53,9 @@ void send_message(int qid, struct myMsgBuf *qbuf, long type, char *text)
   qbuf->msg_type = type;
   strcpy(qbuf->msg_text, text);
 
-  if ((msgsnd(qid, (struct myMsgBuf *)qbuf,strlen(qbuf->msg_text) + 1, 0)) == -1)
+  printf("strlen = %d\n", strlen(qbuf->msg_text) + sizeof(long int));
+
+  if ((msgsnd(qid, (struct myMsgBuf *)qbuf,strlen(qbuf->msg_text) + sizeof(long int), 0)) == -1)
     {
       perror("msgsend");
       exit(1);
@@ -65,8 +67,9 @@ void read_message(int qid, struct myMsgBuf *qbuf, long type)
 {
   printf ("Reading a message....\n");
   qbuf->msg_type = type;
-  msgrcv(qid, (struct msgbuf *) qbuf, MAX_MSG_TEXT_SIZE, type , 0);
-  //  printf ("Type: %ld Text: %s \n", qbuf->msg_type, qbuf->msg_text);
+  //  msgrcv(qid, (struct myMsgBuf *) qbuf, MAX_MSG_TEXT_SIZE + 8, type , 0);
+  msgrcv(qid, (struct myMsgBuf *) qbuf, sizeof(struct myMsgBuf) - sizeof(long int), type , 0);
+  //printf ("Type: %ld senderType : %ld   Text: %s \n", qbuf->msg_type, qbuf->sender_type, qbuf->msg_text);
 }
 
 

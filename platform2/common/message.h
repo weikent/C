@@ -10,9 +10,11 @@
 extern "C"
 {
 #endif
-#define MAX_MSG_TEXT_SIZE 10000 // 消息队列多能传送的最大字符串
+#define MAX_MSG_TEXT_SIZE 8000 // 消息队列多能传送的最大字符串
+
   typedef struct myMsgBuf {
-    long msg_type;
+    long int msg_type;
+    long int sender_type;
     char msg_text[MAX_MSG_TEXT_SIZE];
   } MsgData;
 

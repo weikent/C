@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
   char command[20] = {0};
   char type[2] = {0};
-  char text[100] = {0};
+  char text[10000] = {0};
 
   while (1) {                   /* 测试从命令行输入指令 */
     bzero(command, 20);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
     if (strcmp(command, "s") == 0) {
       bzero(type, 2);
-      bzero(text, 100);
+      bzero(text, 10000);
       printf("please input msg type:");
       gets(type);
       if (strlen(type) > 1) {
@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
       gets(text);
 
       struct myMsgBuf msgbuf;
+      msgbuf.sender_type = 2;
       send_message(msgID, &msgbuf, atol(type), text);
 
     }else if (strcmp(command , "r") == 0) {
@@ -106,7 +107,10 @@ int main(int argc, char *argv[])
       struct myMsgBuf msgbuf;
       read_message(msgID, &msgbuf, atol(type));
       printf("the first msgbuf with msg type = %d, is : %s\n", atol(type), msgbuf.msg_text);
-
+    }else if(strcmp(command, "t") == 0){
+      struct myMsgBuf msgbuf;
+      msgbuf.sender_type = 2;
+      send_message(msgID, &msgbuf, 3, "ddddd");
     }
 
     else if(strcmp(command, "q") == 0) {
