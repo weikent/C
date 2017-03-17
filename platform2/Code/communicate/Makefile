@@ -1,7 +1,7 @@
-### Makefile.test --- 
+### Makefile --- 
 
 ## Author: weishijian@weikents-Air.lan
-## Version: $Id: Makefile.test,v 0.0 2017/03/15 05:04:55 weishijian Exp $
+## Version: $Id: Makefile,v 0.0 2017/03/16 08:18:16 weishijian Exp $
 ## Keywords: 
 ## X-URL: 
 
@@ -9,23 +9,23 @@
 
 
 
-#CC=gcc
-CC=mipsel-openwrt-linux-gcc
-#CC=mipsel-linux-gcc
+
+CC = gcc
 CXX = g++
 
 VPATH = 
 INCLUDE = 
 WALL = -Wall
 C99 = #-std=c99
-THREAD = #-lpthread
+THREAD = -lpthread
 OPTIMIZE = -O2
+
 RM = rm -f
 
 
 SOURCECPP =
 
-SOURCEC =test.c ../../common/msgQ.c
+SOURCEC = ReadSocketBuffer.c packMessage.c global.c comm.c SendHeart.c ConnectionCheck.c SendSocket.c TcpClient.c tool.c ../../common/md5.c
 
 OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
 
@@ -34,7 +34,7 @@ OBJECTSC = $(SOURCEC:%.c=%.o)
 OBJS = $(OBJECTSC) $(OBJECTSCPP)
 
 
-TARGET = test
+TARGET = comm
 
 .PHONY = all
 .PHONY = clean
@@ -47,7 +47,7 @@ all = clean $(TARGET)
 	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
 
 $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
-	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99)
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) -lm
 
 
 clean:
@@ -59,4 +59,4 @@ install:
 
 
 
-### Makefile.test ends here
+### Makefile ends here

@@ -8,8 +8,8 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
-#include "global.h"
-#include "../../common/message.h"
+//#include "global.h"
+#include "message.h"
 
 #ifdef __cplusplus
 extern "C"

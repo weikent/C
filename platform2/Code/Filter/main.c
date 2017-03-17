@@ -16,7 +16,7 @@
 
 
 #include "global.h"
-#include "msgQ.h"
+#include "../../common/msgQ.h"
 #include "socketSerialPort.h"
 #include "timer.h"
 

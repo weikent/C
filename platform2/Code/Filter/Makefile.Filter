@@ -7,7 +7,7 @@ RM=rm -f
 WALL= -Wall
 PTHREAD= -lpthread
 
-SOURCEC=main.c socketSerialPort.c global.c msgQ.c timer.c ../../common/cJSON.c
+SOURCEC=main.c socketSerialPort.c global.c ../../common/msgQ.c timer.c ../../common/cJSON.c
 
 SOURCECPP=
 

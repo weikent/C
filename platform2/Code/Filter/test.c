@@ -29,7 +29,7 @@
 #include <string.h>
 
 #include "../../common/message.h"
-#include "msgQ.h"
+#include "../../common/msgQ.h"
 
 
 /*------------Local Variables----------- */ 
@@ -55,7 +55,7 @@
 int main(int argc, char *argv[])
 {
   int msgID = create_dataQueue();
-  debug_msg("msgID = %d", msgID);
+  //  debug_msg("msgID = %d", msgID);
 
   char command[20] = {0};
   char type[2] = {0};
