@@ -112,18 +112,13 @@ void *SendHeartRun(void *arg)
               intervalOfSendGetTime = 0;
               /* TODO: get time form topicServer */
             }
-
-
-            debug_msg("---");
-            sendSocket(mqttHeart, mqttHeartLen, "mqttHeart");
-
           } else {
             debug_msg("---");
             // is not received suback from server.
 
             /* so should send mqtt subscribe */
             struct mqttSend *mqtt = malloc(sizeof(struct mqttSend));
-    
+
             /* set message type */
             mqtt->fixedHeader.messageType = SUBSCRIBE;
 
@@ -170,7 +165,7 @@ void *SendHeartRun(void *arg)
             for (i = 0; i < len; i++) {
               printf("%02X,", temp[i]);
             }
-    
+
             printf("\n" );
 
             int ret = sendSocket(temp, len, "mqtt subscribe");

@@ -515,6 +515,7 @@ static void filterServerData(const char *data)
 
   /* 在此处解析数据，发送消息队列 */
 
+  debug_msg("data = %s\n", data);
   struct myMsgBuf msgbuf;
   msgbuf.sender_type = MY_MSG_TYPE;
   send_message(msgID, &msgbuf, FILTER_MSG_TYPE, data);

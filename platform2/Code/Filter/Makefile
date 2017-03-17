@@ -38,7 +38,7 @@ TARGET =
 .PHONY = clean
 all :
 	$(MAKE) -f Makefile.Filter
-	$(MAKE) -f Makefile.test
+	$(MAKE) -f Makefile.forTest
 
 %.o : %.c
 	$(CC) -c $(WALL)  $< -o $@ $(INCLUDE) $(C99)
@@ -52,39 +52,11 @@ $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
 
 clean:
 	$(MAKE) clean -f Makefile.Filter
-	$(MAKE) clean -f Makefile.test
+	$(MAKE) clean -f Makefile.forTest
 
 install:
 #	cp *.h *.cpp *.c -r ../wpa
 
-
-
-
-# .PHONY : all
-
-# all :
-# 	$(MAKE) clean -f Makefile.local_ctrl
-# 	$(MAKE) clean -f Makefile.manual_ctrl
-# 	$(MAKE) rebuild -f Makefile.local_ctrl
-# 	$(MAKE) rebuild -f Makefile.manual_ctrl
-# 	cp local_ctrl combo_wireless
-# 	cp manual_ctrl combo_wireless
-# 	cp -rf combo_wireless/call_perform_firmware_update.sh ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/cfg.ini ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/cfg.ini.default ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/check_firmware_update.sh ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/cron_firmware_update ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/gen_formal_update_package.sh ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/gen_test_update_package.sh ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/local_ctrl ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/manual_ctrl ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/perform_firmware_update.sh ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/rcS.update ../../../publish_Package/Wireless
-# 	cp -rf combo_wireless/start_isockets.sh ../../../publish_Package/Wireless
-
-# clean :
-# 	$(MAKE) clean -f Makefile.local_ctrl
-# 	$(MAKE) clean -f Makefile.manual_ctrl
 
 
 ### Makefile ends here

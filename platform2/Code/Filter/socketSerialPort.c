@@ -42,7 +42,7 @@
 
 
 
-int serial_fd = 0;
+ int serial_fd = 0;
 
 int baudRete = 57600;
 
@@ -118,6 +118,13 @@ int uart_recv(int fd, char *data, int datalen)
   ret = select(fd+1, &fs_read, NULL, NULL, &tv_timeout);
   printf("ret = %d\n", ret);
   //如果返回0，代表在描述符状态改变前已超过timeout时间,错误返回-1
+  if (ret < 0) {
+    perror("---select");
+    return -1;
+  }else if (ret == 0){
+    perror("select timeout");
+    return -1;
+  }
 
   if (FD_ISSET(fd, &fs_read)) {
     len = read(fd, data, datalen);

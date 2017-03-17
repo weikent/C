@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 
   while(1){
 
+    bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
     read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE);
 
     debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type);
@@ -70,6 +71,11 @@ int main(int argc, char *argv[])
     sem_wait(&g_semNeedWait);
 
     int len = uart_recv(serial_fd, buf, MAX_SERIAL_MSG_SIZE);
+    if (len <= 0) {
+      debug_msg("uart_recv failed, maybe timeout");
+      continue;
+    }
+
     buf[len+1] = '\0';
     debug_msg("buf = %s\n", buf);
 

@@ -51,7 +51,7 @@ pthread_mutex_t g_pthDealPubAck; /* 处理发送puback的锁 */
 char messageType[2];      /* 从local层获取的消息的类型 */
 
 
-char *g_subscribeTopicFilter[] = {"isockets/App/", "isockets/Web/", "isockets/Topic/"};
+char *g_subscribeTopicFilter[] = {"isockets/Server/", "isockets/Web/", "isockets/Topic/"};
 short g_subscribePacketIdentifier;
 
 
@@ -75,8 +75,6 @@ _Bool selectTimeout = false;
 _Bool hasSendData = false;
 _Bool isFirstUse = false;
 
-char *mqttHeart = NULL;
-int mqttHeartLen = 0;
 char g_mac[LEN_OF_MAC];
 char g_serverIP[LEN_OF_IPADDRESS] = {0};
 int g_serverPort = 0;

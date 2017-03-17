@@ -81,8 +81,11 @@ int main(int argc,char ** argv)
 
 
 
-  GetMAC("eth0", g_mac);
-  debug_msg("g_mac = %s\n", g_mac);
+  /* GetMAC("eth0", g_mac); */
+  /* debug_msg("g_mac = %s\n", g_mac); */
+  strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
+
   int temp;
   pthread_t tcpClient;
 
@@ -130,8 +133,12 @@ int main(int argc,char ** argv)
     }
 
 
+  struct myMsgBuf msgReadMsgBuf;
   while (1) {
-    sleep(1);
+    bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
+    read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE);
+
+    debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type);
   }
 }
 

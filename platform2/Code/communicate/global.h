@@ -64,8 +64,6 @@ extern sem_t g_semConnectionCheck;
 extern sem_t g_semNetcom;
 
 
-extern char *mqttHeart;
-extern int mqttHeartLen;
 
 #define LEN_OF_IPADDRESS 16	/* len of ip address */
 #define LEN_OF_MAC 32 		/* Device Mac 's length */

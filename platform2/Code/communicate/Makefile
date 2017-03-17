@@ -10,7 +10,8 @@
 
 
 
-CC = gcc
+#CC = gcc
+CC=mipsel-openwrt-linux-gcc
 CXX = g++
 
 VPATH = 
@@ -25,7 +26,7 @@ RM = rm -f
 
 SOURCECPP =
 
-SOURCEC = ReadSocketBuffer.c packMessage.c global.c comm.c SendHeart.c ConnectionCheck.c SendSocket.c TcpClient.c tool.c ../../common/md5.c
+SOURCEC = ReadSocketBuffer.c packMessage.c global.c comm.c SendHeart.c ConnectionCheck.c SendSocket.c TcpClient.c tool.c ../../common/md5.c ../../common/msgQ.c
 
 OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
 
@@ -47,7 +48,7 @@ all = clean $(TARGET)
 	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
 
 $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
-	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) -lm
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) -lm -ldl
 
 
 clean:
