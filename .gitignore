@@ -16,3 +16,8 @@
 *.exe
 *.out
 *.app
+
+
+cscope.files
+cscope.out
+
