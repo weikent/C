@@ -502,6 +502,7 @@ void *ReadSocketBufferRun(void *arg)
                     //   break;
                 }
             }
+            changeTCPStatus();
         }
     }
     pthread_exit((void*)0);
@@ -531,6 +532,15 @@ static void sendmessageToLocal()
 
 }
 
+static int changeTCPStatus()
+{
+    if (shouldCloseSocket)
+    {
+        debug_msg("shouldCloseSocket\n");
+        CloseTCPConnection();
+    }
+    return 0;
+}
 
 
 

@@ -99,7 +99,22 @@ void filterLocalData(const char *data)
 
 int readLocalMessage(char **str)
 {
-  return 0;
+  struct myMsgBuf msgReadMsgBuf;
+
+  bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
+  read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE);
+
+  debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type);
+
+  *str = malloc(strlen(msgReadMsgBuf.msg_text) + 1);
+  bzero(*str, strlen(msgReadMsgBuf.msg_text) + 1);
+  memcpy(*str, msgReadMsgBuf.msg_text, strlen(msgReadMsgBuf .msg_text));
+
+  /* char messageType[2]; */
+
+  /* sprintf(messageType, "%d", tmsg.msg_type); */
+
+  return strlen(msgReadMsgBuf.msg_text);
 }
 
 
@@ -125,16 +140,19 @@ void *TcpClientRun(void *arg)
   for ( ;  ;  )
     {
       unsigned char *str = NULL;
-      readLocalMessage(&str);
+      int len = readLocalMessage(&str);
 
+      char *result = NULL;
+      len = mqttPublish(len, str, &result);
       if (g_serverIP[0] != 0 && g_serverPort != 0)
         {
-          //          sendSocket(result, publishLen, "clientMessage is encried, and do not have waveline");
+          sendSocket(result, len, "str");
         }
       else  // if not get server IP and port
         {
         }
 
+      free(str);
     } // for loop end
 }
 

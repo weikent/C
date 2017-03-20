@@ -81,9 +81,9 @@ int main(int argc,char ** argv)
 
 
 
-  /* GetMAC("eth0", g_mac); */
-  /* debug_msg("g_mac = %s\n", g_mac); */
-  strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+  GetMAC("apcli0", g_mac);
+  debug_msg("g_mac = %s\n", g_mac);
+  /* strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"); */
 
 
   int temp;
@@ -135,10 +135,28 @@ int main(int argc,char ** argv)
 
   struct myMsgBuf msgReadMsgBuf;
   while (1) {
-    bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
-    read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE);
+    /* bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text)); */
+    /* read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE); */
 
-    debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type);
+    /* debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type); */
+    sleep(2);
+
+    if (g_isSubscribed) {
+
+      msgReadMsgBuf.msg_type = FILTER_MSG_TYPE;
+      msgReadMsgBuf.sender_type = MY_MSG_TYPE;
+
+      int i = 0;
+      for (i = 0; i < 2; i++) {
+        bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
+        char command[2] = {0};
+        sprintf(command, "%d", i);
+        strcpy(msgReadMsgBuf.msg_text, command);
+        send_message(msgID, &msgReadMsgBuf, FILTER_MSG_TYPE, command);
+      }
+
+    }
+
   }
 }
 
