@@ -25,7 +25,7 @@ def upgrade():
 
 
 
-    recordFile = "record_" + time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+    recordFile = "record_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     print (recordFile)
     recordFile_f = open(recordFile, 'w')
     # f.write(a)
@@ -111,6 +111,7 @@ def upgrade():
             isSuccessed = False
             return
 
+    recordFile_f.close()
 
 
 def usage():
