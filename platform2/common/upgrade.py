@@ -25,7 +25,7 @@ def upgrade():
 
 
 
-    recordFile = "record_" + time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
+    recordFile = "record_{}".format(time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime()))
     print (recordFile)
     recordFile_f = open(recordFile, 'w')
     # f.write(a)
@@ -117,7 +117,7 @@ def upgrade():
 def usage():
     '''
     '''
-    print ("\nUSAGE:               u  start upgrade.")
+    print ("\nUSAGE:                u  start upgrade.")
     print ("                      g  generate json file.")
 
 def generate():
