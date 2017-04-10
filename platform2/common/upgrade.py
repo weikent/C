@@ -9,8 +9,8 @@ import sys
 import telnetlib
 import json
 import os
-
-
+import time
+import datetime
 
 
 TIME_OUT = 5
@@ -24,6 +24,14 @@ def upgrade():
     # read info.json
 
 
+
+    recordFile = "record_" + time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+    print (recordFile)
+    recordFile_f = open(recordFile, 'w')
+    # f.write(a)
+    # f.close()
+
+    isSuccessed = True
     ip = []
     commands = []
 
@@ -39,18 +47,23 @@ def upgrade():
 
         confirmation = input("please make a confirmation (Y/N):")
         if confirmation != "Y":
-            exit(1)
+            print("you did input \"Y\", this application will exit.")
+            isSuccessed = False
+            return
 
         print ("you want to use those command(s) to upgrade:\n")
         for item in commands:
             print (item)
+
         confirmation = input("please make a confirmation (Y/N):")
         if confirmation != "Y":
-            exit(1)
-
+            print("you did input \"Y\", this application will exit.")
+            isSuccessed = False
+            return
     else:
         print ("please create %s first, using -g parameter." %("info.json"))
-        exit(1)
+        return
+
 
     # step 2 get username and password
     username = input("please input username(used for telnet):")
@@ -60,12 +73,15 @@ def upgrade():
     # step 3 telnet
     for item in ip:
         print ("connecting", item)
+        recordFile_f.write("\n\n+++++++++++++++operate ip: {}".format(item))
         try:
             tn = telnetlib.Telnet(item,23, TIME_OUT)
         except:
             info = sys.exc_info()
             print ("telnet failed, the reason is :", info[1])
-            exit(0)
+            print ("this application will exit")
+            return
+
         tn.set_debuglevel(0)
         tn.read_until(b'login: ')
         tn.write((username + " \n").encode(encoding="utf-8"))
@@ -78,24 +94,30 @@ def upgrade():
             print (type(ret))
             if b'login: ' in ret:
                 print ("the username and password you input may be wrong, please check and re-run this app again.")
-                exit(1)
+                print ("this applcation will exit")
+                isSuccessed = False
+                return
             else:
                 for item_command in commands:
                     tn.write((item_command + " \n").encode(encoding="utf-8"))
+                    recordFile_f.write("///////////////you input command: {} \n".format(item_command))
                     ret = tn.read_until(b"#", TIME_OUT)
                     print (ret.decode())
+                    recordFile_f.write("---------------response is : {} \n".format(ret.decode()))
 
         except EOFError:
             print ('no data can be readed')
-            exit(1)
+            print ("this applcation will exit")
+            isSuccessed = False
+            return
+
 
 
 def usage():
     '''
     '''
-    print ("\nUSAGE: python upgrade.py -f  show help file.")
-    print ("                         -u  start upgrade.")
-    print ("                         -g  generate json file.")
+    print ("\nUSAGE:               u  start upgrade.")
+    print ("                      g  generate json file.")
 
 def generate():
     dic = {}
@@ -107,23 +129,37 @@ def generate():
     f = open("./info.json", 'w')
     f.write(a)
     f.close()
-
+    print ("generate info.json file successfully.\nyou can modify this file, \nand input ips(device that you want to upgrade) \nand commands(command that you want to use)")
 
 
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        usage()
-    elif len(sys.argv) == 2:
-        if sys.argv[1] == "-f":
-            usage()
-        elif sys.argv[1] == "-u":
-            upgrade()
-        elif sys.argv[1] == "-g":
-            generate()
-        else:
-            usage()
-    else:
-        usage()
+    # if len(sys.argv) == 1:
+    #     usage()
+    # elif len(sys.argv) == 2:
+    #     if sys.argv[1] == "-f":
+    #         usage()
+    #     elif sys.argv[1] == "-u":
+    #         upgrade()
+    #     elif sys.argv[1] == "-g":
+    #         generate()
+    #     else:
+    #         usage()
+    # else:
+    #     usage()
+    # import platform
+    # print platform.system()
 
+    usage()
+    ret = input("please choose a command to run:")
+
+    if ret == "u":
+        upgrade()
+    elif ret == "g":
+        generate()
+    else:
+        pass
+
+    print ("\n")
+    input("input any key to exit")
