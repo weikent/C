@@ -15,7 +15,7 @@ CC=mipsel-openwrt-linux-gcc
 CXX = g++
 
 VPATH = 
-INCLUDE = 
+INCLUDE = -I. -L. -Iinclude -I/home/startech1/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/include/ -L/home/startech1/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/lib -fPIC
 WALL = -Wall
 C99 = #-std=c99
 THREAD = -lpthread
@@ -48,7 +48,7 @@ all = clean $(TARGET)
 	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
 
 $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
-	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) -lm -ldl
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) -lm -ldl -liwinfo -luci -lubox
 
 
 clean:

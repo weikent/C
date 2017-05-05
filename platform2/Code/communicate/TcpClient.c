@@ -41,7 +41,7 @@
 #include <netdb.h>
 #include <pthread.h>
 
-#include "packmessage.h"
+#include "packMessage.h"
 #include "SendSocket.h"
 #include "global.h"
 #include "../../common/message.h"
