@@ -165,7 +165,6 @@ int setKeepAlive()
 int sendSocket(char *buffer, int bufferLen, char *type)
 {
     signal( SIGPIPE, SIG_IGN );
-    hasSendData = false;
 
     int result = -100;
     errno = 0;
@@ -214,7 +213,7 @@ int sendSocket(char *buffer, int bufferLen, char *type)
         /* start thread */
 
         /* startCheckConnection(); */
-        if (isChecking)
+        if (g_isChecking)
         {
             debug_msg ("g_bIsChecking is Running, don't start again.\n");
         }
@@ -226,10 +225,6 @@ int sendSocket(char *buffer, int bufferLen, char *type)
     }
 
     debug_msg ("sendSocket Result = %d\n", result);
-
-    hasSendData = true;
-/* 一次发送最终都必须启动一次读操作 */
-//    startReadSocket();
 
 //    free(buffer);               /* release buffer */
 

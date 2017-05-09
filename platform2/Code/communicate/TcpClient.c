@@ -142,6 +142,11 @@ void *TcpClientRun(void *arg)
       unsigned char *str = NULL;
       int len = readLocalMessage(&str);
 
+      if (deviceModel == AP) {
+        free(str);
+        continue;
+      }
+
       char *result = NULL;
       len = mqttPublish(len, str, &result);
       if (g_serverIP[0] != 0 && g_serverPort != 0)
@@ -152,6 +157,7 @@ void *TcpClientRun(void *arg)
         {
         }
 
+      free(result);
       free(str);
     } // for loop end
 }

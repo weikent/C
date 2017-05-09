@@ -82,6 +82,12 @@ void *SendHeartRun(void *arg)
       debug_msg("5s");
       sleep(5);
 
+
+      if (deviceModel == AP) {
+        debug_msg("current deviceModel is AP");
+        continue;
+      }
+
       if (g_isCreated) {
         debug_msg("have created socket and connect to server\n");
 
@@ -218,12 +224,12 @@ void *SendHeartRun(void *arg)
         // should create socket, and connect to server.
 
         /* if is reConnect network, then continue */
-        if (isChecking) {
+        if (g_isChecking) {
           debug_msg("--");
           continue;
         } else {
           sem_post(&g_semConnectionCheck);
-        } /* end isChecking else */
+        } /* end g_isChecking else */
       }  /* end g_isCreated else */
     }
   pthread_exit((void*)0);

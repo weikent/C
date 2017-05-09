@@ -29,14 +29,14 @@
 #include "SendHeart.h"
 #include "TcpClient.h"
 #include "../../common/msgQ.h"
-
+#include "DeviceModelChange.h"
+#include "../../common/dealJson.h"
 
 
 
 
 void initial()
 {
-
   /* signal( SIGABRT, SIG_IGN ); */
   /* signal( SIGBUS, SIG_IGN ); */
   /* signal( SIGFPE, SIG_IGN ); */
@@ -68,8 +68,88 @@ void initial()
 
   sem_init(&g_semConnectionCheck, 0, 0);
   //    sem_init(&g_semSendHeart, 0, 0);
-  sem_init(&g_semNetcom, 0, 0);
 
+  int ret = -1;
+  if ((ret = getValueFromJson(CONFIGFILE, "ssid", g_ssid)) == 0) {
+    debug_msg("g_ssid = %s", g_ssid); 
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "password", g_password)) == 0) {
+    debug_msg("g_password = %s", g_password);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "ip", g_ip_addr)) == 0) {
+    debug_msg("g_ip_addr = %s", g_ip_addr);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "ip", g_ip_addr)) == 0) {
+    debug_msg("g_ip_addr = %s", g_ip_addr);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "mask", g_mask)) == 0) {
+    debug_msg("g_mask= %s", g_mask);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "gateway", g_gateWay)) == 0) {
+    debug_msg("g_gateWay= %s", g_gateWay);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "dns1", g_dns1)) == 0) {
+    debug_msg("g_dns1 = %s", g_dns1);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "dns1", g_dns2)) == 0) {
+    debug_msg("g_dns2 = %s", g_dns2);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  if ((ret = getValueFromJson(CONFIGFILE, "serverIP", g_serverWebsite)) == 0) {
+    debug_msg("g_serverIP = %s", g_serverWebsite);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  char cServerPort[6] = {0};
+  if ((ret = getValueFromJson(CONFIGFILE, "serverPort", cServerPort)) == 0) {
+    g_serverPort = atoi(cServerPort);
+    debug_msg("g_serverPort = %d", g_serverPort);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
+
+  char cDhcpStatus[2] = {0};
+  if ((ret = getValueFromJson(CONFIGFILE, "dhcp", cDhcpStatus)) == 0) {
+    g_dhcpStatus = atoi(cDhcpStatus);
+    debug_msg("g_dhcpStatus = %d", g_dhcpStatus);
+  }else{
+    debug_msg("read %s failed, should change to AP model!", CONFIGFILE);
+    changeToAP();
+  }
 
   int msgID = create_dataQueue();
 }
@@ -79,34 +159,40 @@ int main(int argc,char ** argv)
 {
   initial();
 
-
-
   GetMAC("apcli0", g_mac);
   debug_msg("g_mac = %s\n", g_mac);
   /* strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"); */
 
 
   int temp;
+  pthread_t deviceModel;
+  if ((temp = pthread_create(&deviceModel, NULL, DeviceModelChange, NULL)) != 0) {
+    debug_msg("create thread for DeviceModelChange failed !");
+  }
+  else{
+    debug_msg("create thread for DeviceModelChange successed !");
+  }
+
   pthread_t tcpClient;
 
   if((temp = pthread_create(&tcpClient, NULL, TcpClientRun, NULL)) != 0)
     {
-      //        printf("create thread for TcpClientRun failed !\n");
+      debug_msg("create thread for TcpClientRun failed !\n");
     }
   else
     {
-      //        printf("create thread for TcpClientRun successed !\n");
+      debug_msg("create thread for TcpClientRun successed !\n");
     }
 
   pthread_t sendHeart;
 
   if((temp = pthread_create(&sendHeart, NULL, SendHeartRun, NULL)) != 0)
     {
-      printf("create thread for SendHeartRun failed !\n");
+      debug_msg("create thread for SendHeartRun failed !\n");
     }
   else
     {
-      printf("create thread for SendHeartRun successed !\n");
+      debug_msg("create thread for SendHeartRun successed !\n");
     }
 
 
@@ -114,22 +200,22 @@ int main(int argc,char ** argv)
 
   if((temp = pthread_create(&readSocketBuffer, NULL, ReadSocketBufferRun, NULL)) != 0)
     {
-      printf("create thread for ReadSocketBufferRun failed !\n");
+      debug_msg("create thread for ReadSocketBufferRun failed !\n");
     }
   else
     {
-      printf("create thread for ReadSocketBufferRun successed !\n");
+      debug_msg("create thread for ReadSocketBufferRun successed !\n");
     }
 
   pthread_t pthConnectionRun;
 
   if((temp = pthread_create(&pthConnectionRun, NULL, ConnectionCheckRun, NULL)) != 0)
     {
-      printf("create thread for ConnectionCheckRun failed !\n");
+      debug_msg("create thread for ConnectionCheckRun failed !\n");
     }
   else
     {
-      printf("create thread for ConnectionCheckRun successed !\n");
+      debug_msg("create thread for ConnectionCheckRun successed !\n");
     }
 
 
@@ -147,7 +233,7 @@ int main(int argc,char ** argv)
       msgReadMsgBuf.sender_type = MY_MSG_TYPE;
 
       int i = 0;
-      for (i = 0; i < 2; i++) {
+      for (i = 0; i < 1; i++) {
         bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
         char command[2] = {0};
         sprintf(command, "%d", i);

@@ -58,7 +58,7 @@ short g_subscribePacketIdentifier;
 pthread_mutex_t g_pthTCPSocket;
 
 sem_t g_semConnectionCheck;
-sem_t g_semNetcom;
+
 
 
 
@@ -69,7 +69,7 @@ _Bool shouldCloseSocket = false;
 
 
 
-_Bool isChecking = false;
+_Bool g_isChecking = false;
 
 _Bool selectTimeout = false;
 _Bool hasSendData = false;
@@ -78,6 +78,24 @@ _Bool isFirstUse = false;
 char g_mac[LEN_OF_MAC];
 char g_serverIP[LEN_OF_IPADDRESS] = {0};
 int g_serverPort = 0;
+char g_serverWebsite[LEN_OF_WEBSITE] = {0};
+
+/* mac */
+char g_mac[LEN_OF_MAC] = {0};
+// wifi info
+char g_ssid[LEN_OF_WIFIINFO] = {0};
+char g_password[LEN_OF_WIFIINFO] = {0};
+
+// dhcp info
+int g_dhcpStatus = -1;
+char g_ip_addr[LEN_OF_IPADDRESS] = {0};
+char g_mask[LEN_OF_IPADDRESS] = {0};
+char g_gateWay[LEN_OF_IPADDRESS] = {0};
+char g_dns1[LEN_OF_IPADDRESS] = {0};
+char g_dns2[LEN_OF_IPADDRESS] = {0};
 
 
 int msgID = 0;
+
+enum deviceModel deviceModel = AP;
+enum deviceStatus deviceStatus = JOIN_ROUTE_FAILED;

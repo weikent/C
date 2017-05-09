@@ -63,14 +63,14 @@
 
 int checkConnectAPI();
 int checkConnectMQTT();
-
+int scanWifi();
 
 static char * format_bssid(unsigned char *mac)
 {
 	static char buf[18];
 
 	snprintf(buf, sizeof(buf), "%02X:%02X:%02X:%02X:%02X:%02X",
-		mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+           mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 
 	return buf;
 }
@@ -179,7 +179,7 @@ static char * format_rate(int rate)
 		snprintf(buf, sizeof(buf), "unknown");
 	else
 		snprintf(buf, sizeof(buf), "%d.%d MBit/s",
-			rate / 1000, (rate % 1000) / 100);
+             rate / 1000, (rate % 1000) / 100);
 
 	return buf;
 }
@@ -242,64 +242,64 @@ static char * format_encryption(struct iwinfo_crypto_entry *c)
 	static char buf[512];
 
 	if (!c)
-	{
-		snprintf(buf, sizeof(buf), "unknown");
-	}
+    {
+      snprintf(buf, sizeof(buf), "unknown");
+    }
 	else if (c->enabled)
-	{
-		/* WEP */
-		if (c->auth_algs && !c->wpa_version)
-		{
-			if ((c->auth_algs & IWINFO_AUTH_OPEN) &&
-				(c->auth_algs & IWINFO_AUTH_SHARED))
-			{
-				snprintf(buf, sizeof(buf), "WEP Open/Shared (%s)",
-					format_enc_ciphers(c->pair_ciphers));
-			}
-			else if (c->auth_algs & IWINFO_AUTH_OPEN)
-			{
-				snprintf(buf, sizeof(buf), "WEP Open System (%s)",
-					format_enc_ciphers(c->pair_ciphers));
-			}
-			else if (c->auth_algs & IWINFO_AUTH_SHARED)
-			{
-				snprintf(buf, sizeof(buf), "WEP Shared Auth (%s)",
-					format_enc_ciphers(c->pair_ciphers));
-			}
-		}
+    {
+      /* WEP */
+      if (c->auth_algs && !c->wpa_version)
+        {
+          if ((c->auth_algs & IWINFO_AUTH_OPEN) &&
+              (c->auth_algs & IWINFO_AUTH_SHARED))
+            {
+              snprintf(buf, sizeof(buf), "WEP Open/Shared (%s)",
+                       format_enc_ciphers(c->pair_ciphers));
+            }
+          else if (c->auth_algs & IWINFO_AUTH_OPEN)
+            {
+              snprintf(buf, sizeof(buf), "WEP Open System (%s)",
+                       format_enc_ciphers(c->pair_ciphers));
+            }
+          else if (c->auth_algs & IWINFO_AUTH_SHARED)
+            {
+              snprintf(buf, sizeof(buf), "WEP Shared Auth (%s)",
+                       format_enc_ciphers(c->pair_ciphers));
+            }
+        }
 
-		/* WPA */
-		else if (c->wpa_version)
-		{
-			switch (c->wpa_version) {
-				case 3:
-					snprintf(buf, sizeof(buf), "mixed WPA/WPA2 %s (%s)",
-						format_enc_suites(c->auth_suites),
-						format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
-					break;
+      /* WPA */
+      else if (c->wpa_version)
+        {
+          switch (c->wpa_version) {
+          case 3:
+            snprintf(buf, sizeof(buf), "mixed WPA/WPA2 %s (%s)",
+                     format_enc_suites(c->auth_suites),
+                     format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
+            break;
 
-				case 2:
-					snprintf(buf, sizeof(buf), "WPA2 %s (%s)",
-						format_enc_suites(c->auth_suites),
-						format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
-					break;
+          case 2:
+            snprintf(buf, sizeof(buf), "WPA2 %s (%s)",
+                     format_enc_suites(c->auth_suites),
+                     format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
+            break;
 
-				case 1:
-					snprintf(buf, sizeof(buf), "WPA %s (%s)",
-						format_enc_suites(c->auth_suites),
-						format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
-					break;
-			}
-		}
-		else
-		{
-			snprintf(buf, sizeof(buf), "none");
-		}
-	}
+          case 1:
+            snprintf(buf, sizeof(buf), "WPA %s (%s)",
+                     format_enc_suites(c->auth_suites),
+                     format_enc_ciphers(c->pair_ciphers | c->group_ciphers));
+            break;
+          }
+        }
+      else
+        {
+          snprintf(buf, sizeof(buf), "none");
+        }
+    }
 	else
-	{
-		snprintf(buf, sizeof(buf), "none");
-	}
+    {
+      snprintf(buf, sizeof(buf), "none");
+    }
 
 	return buf;
 }
@@ -312,11 +312,11 @@ static char * format_hwmodes(int modes)
 		snprintf(buf, sizeof(buf), "unknown");
 	else
 		snprintf(buf, sizeof(buf), "802.11%s%s%s%s%s",
-			(modes & IWINFO_80211_A) ? "a" : "",
-			(modes & IWINFO_80211_B) ? "b" : "",
-			(modes & IWINFO_80211_G) ? "g" : "",
-			(modes & IWINFO_80211_N) ? "n" : "",
-			(modes & IWINFO_80211_AC) ? "ac" : "");
+             (modes & IWINFO_80211_A) ? "a" : "",
+             (modes & IWINFO_80211_B) ? "b" : "",
+             (modes & IWINFO_80211_G) ? "g" : "",
+             (modes & IWINFO_80211_N) ? "n" : "",
+             (modes & IWINFO_80211_AC) ? "ac" : "");
 
 	return buf;
 }
@@ -328,31 +328,31 @@ static char * format_assocrate(struct iwinfo_rate_entry *r)
 	int l = sizeof(buf);
 
 	if (r->rate <= 0)
-	{
-		snprintf(buf, sizeof(buf), "unknown");
-	}
+    {
+      snprintf(buf, sizeof(buf), "unknown");
+    }
 	else
-	{
-		p += snprintf(p, l, "%s", format_rate(r->rate));
-		l = sizeof(buf) - (p - buf);
+    {
+      p += snprintf(p, l, "%s", format_rate(r->rate));
+      l = sizeof(buf) - (p - buf);
 
-		if (r->is_ht)
-		{
-			p += snprintf(p, l, ", MCS %d, %dMHz", r->mcs, r->mhz);
-			l = sizeof(buf) - (p - buf);
-		}
-		else if (r->is_vht)
-		{
-			p += snprintf(p, l, ", VHT-MCS %d, %dMHz", r->mcs, r->mhz);
-			l = sizeof(buf) - (p - buf);
+      if (r->is_ht)
+        {
+          p += snprintf(p, l, ", MCS %d, %dMHz", r->mcs, r->mhz);
+          l = sizeof(buf) - (p - buf);
+        }
+      else if (r->is_vht)
+        {
+          p += snprintf(p, l, ", VHT-MCS %d, %dMHz", r->mcs, r->mhz);
+          l = sizeof(buf) - (p - buf);
 
-			if (r->nss)
-			{
-				p += snprintf(p, l, ", VHT-NSS %d", r->nss);
-				l = sizeof(buf) - (p - buf);
-			}
-		}
-	}
+          if (r->nss)
+            {
+              p += snprintf(p, l, ", VHT-NSS %d", r->nss);
+              l = sizeof(buf) - (p - buf);
+            }
+        }
+    }
 
 	return buf;
 }
@@ -370,15 +370,15 @@ static char * print_hardware_id(const struct iwinfo_ops *iw, const char *ifname)
 	struct iwinfo_hardware_id ids;
 
 	if (!iw->hardware_id(ifname, (char *)&ids))
-	{
-		snprintf(buf, sizeof(buf), "%04X:%04X %04X:%04X",
-			ids.vendor_id, ids.device_id,
-			ids.subsystem_vendor_id, ids.subsystem_device_id);
-	}
+    {
+      snprintf(buf, sizeof(buf), "%04X:%04X %04X:%04X",
+               ids.vendor_id, ids.device_id,
+               ids.subsystem_vendor_id, ids.subsystem_device_id);
+    }
 	else
-	{
-		snprintf(buf, sizeof(buf), "unknown");
-	}
+    {
+      snprintf(buf, sizeof(buf), "unknown");
+    }
 
 	return buf;
 }
@@ -578,38 +578,38 @@ static char * print_phyname(const struct iwinfo_ops *iw, const char *ifname)
 static void print_info(const struct iwinfo_ops *iw, const char *ifname)
 {
 	printf("%-9s ESSID: %s\n",
-		ifname,
-		print_ssid(iw, ifname));
+         ifname,
+         print_ssid(iw, ifname));
 	printf("          Access Point: %s\n",
-		print_bssid(iw, ifname));
+         print_bssid(iw, ifname));
 	printf("          Mode: %s  Channel: %s (%s)\n",
-		print_mode(iw, ifname),
-		print_channel(iw, ifname),
-		print_frequency(iw, ifname));
+         print_mode(iw, ifname),
+         print_channel(iw, ifname),
+         print_frequency(iw, ifname));
 	printf("          Tx-Power: %s  Link Quality: %s/%s\n",
-		print_txpower(iw, ifname),
-		print_quality(iw, ifname),
-		print_quality_max(iw, ifname));
+         print_txpower(iw, ifname),
+         print_quality(iw, ifname),
+         print_quality_max(iw, ifname));
 	printf("          Signal: %s  Noise: %s\n",
-		print_signal(iw, ifname),
-		print_noise(iw, ifname));
+         print_signal(iw, ifname),
+         print_noise(iw, ifname));
 	printf("          Bit Rate: %s\n",
-		print_rate(iw, ifname));
+         print_rate(iw, ifname));
 	printf("          Encryption: %s\n",
-		print_encryption(iw, ifname));
+         print_encryption(iw, ifname));
 	printf("          Type: %s  HW Mode(s): %s\n",
-		print_type(iw, ifname),
-		print_hwmodes(iw, ifname));
+         print_type(iw, ifname),
+         print_hwmodes(iw, ifname));
 	printf("          Hardware: %s [%s]\n",
-		print_hardware_id(iw, ifname),
-		print_hardware_name(iw, ifname));
+         print_hardware_id(iw, ifname),
+         print_hardware_name(iw, ifname));
 	printf("          TX power offset: %s\n",
-		print_txpower_offset(iw, ifname));
+         print_txpower_offset(iw, ifname));
 	printf("          Frequency offset: %s\n",
-		print_frequency_offset(iw, ifname));
+         print_frequency_offset(iw, ifname));
 	printf("          Supports VAPs: %s  PHY name: %s\n",
-		print_mbssid_supp(iw, ifname),
-		print_phyname(iw, ifname));
+         print_mbssid_supp(iw, ifname),
+         print_phyname(iw, ifname));
 }
 
 
@@ -620,35 +620,35 @@ static void print_scanlist(const struct iwinfo_ops *iw, const char *ifname)
 	struct iwinfo_scanlist_entry *e;
 
 	if (iw->scanlist(ifname, buf, &len))
-	{
-		printf("Scanning not possible\n\n");
-		return;
-	}
+    {
+      printf("Scanning not possible\n\n");
+      return;
+    }
 	else if (len <= 0)
-	{
-		printf("No scan results\n\n");
-		return;
-	}
+    {
+      printf("No scan results\n\n");
+      return;
+    }
 
 	for (i = 0, x = 1; i < len; i += sizeof(struct iwinfo_scanlist_entry), x++)
-	{
-		e = (struct iwinfo_scanlist_entry *) &buf[i];
+    {
+      e = (struct iwinfo_scanlist_entry *) &buf[i];
 
-		printf("Cell %02d - Address: %s\n",
-			x,
-			format_bssid(e->mac));
-		printf("          ESSID: %s\n",
-			format_ssid(e->ssid));
-		printf("          Mode: %s  Channel: %s\n",
-			IWINFO_OPMODE_NAMES[e->mode],
-			format_channel(e->channel));
-		printf("          Signal: %s  Quality: %s/%s\n",
-			format_signal(e->signal - 0x100),
-			format_quality(e->quality),
-			format_quality_max(e->quality_max));
-		printf("          Encryption: %s\n\n",
-			format_encryption(&e->crypto));
-	}
+      printf("Cell %02d - Address: %s\n",
+             x,
+             format_bssid(e->mac));
+      printf("          ESSID: %s\n",
+             format_ssid(e->ssid));
+      printf("          Mode: %s  Channel: %s\n",
+             IWINFO_OPMODE_NAMES[e->mode],
+             format_channel(e->channel));
+      printf("          Signal: %s  Quality: %s/%s\n",
+             format_signal(e->signal - 0x100),
+             format_quality(e->quality),
+             format_quality_max(e->quality_max));
+      printf("          Encryption: %s\n\n",
+             format_encryption(&e->crypto));
+    }
 }
 
 
@@ -659,10 +659,10 @@ static void print_txpwrlist(const struct iwinfo_ops *iw, const char *ifname)
 	struct iwinfo_txpwrlist_entry *e;
 
 	if (iw->txpwrlist(ifname, buf, &len) || len <= 0)
-	{
-		printf("No TX power information available\n");
-		return;
-	}
+    {
+      printf("No TX power information available\n");
+      return;
+    }
 
 	if (iw->txpower(ifname, &pwr))
 		pwr = -1;
@@ -671,14 +671,14 @@ static void print_txpwrlist(const struct iwinfo_ops *iw, const char *ifname)
 		off = 0;
 
 	for (i = 0; i < len; i += sizeof(struct iwinfo_txpwrlist_entry))
-	{
-		e = (struct iwinfo_txpwrlist_entry *) &buf[i];
+    {
+      e = (struct iwinfo_txpwrlist_entry *) &buf[i];
 
-		printf("%s%3d dBm (%4d mW)\n",
-			(pwr == e->dbm) ? "*" : " ",
-			e->dbm + off,
-			iwinfo_dbm2mw(e->dbm + off));
-	}
+      printf("%s%3d dBm (%4d mW)\n",
+             (pwr == e->dbm) ? "*" : " ",
+             e->dbm + off,
+             iwinfo_dbm2mw(e->dbm + off));
+    }
 }
 
 
@@ -689,24 +689,24 @@ static void print_freqlist(const struct iwinfo_ops *iw, const char *ifname)
 	struct iwinfo_freqlist_entry *e;
 
 	if (iw->freqlist(ifname, buf, &len) || len <= 0)
-	{
-		printf("No frequency information available\n");
-		return;
-	}
+    {
+      printf("No frequency information available\n");
+      return;
+    }
 
 	if (iw->channel(ifname, &ch))
 		ch = -1;
 
 	for (i = 0; i < len; i += sizeof(struct iwinfo_freqlist_entry))
-	{
-		e = (struct iwinfo_freqlist_entry *) &buf[i];
+    {
+      e = (struct iwinfo_freqlist_entry *) &buf[i];
 
-		printf("%s %s (Channel %s)%s\n",
-			(ch == e->channel) ? "*" : " ",
-			format_frequency(e->mhz),
-			format_channel(e->channel),
-			e->restricted ? " [restricted]" : "");
-	}
+      printf("%s %s (Channel %s)%s\n",
+             (ch == e->channel) ? "*" : " ",
+             format_frequency(e->mhz),
+             format_channel(e->channel),
+             e->restricted ? " [restricted]" : "");
+    }
 }
 
 
@@ -717,37 +717,37 @@ static void print_assoclist(const struct iwinfo_ops *iw, const char *ifname)
 	struct iwinfo_assoclist_entry *e;
 
 	if (iw->assoclist(ifname, buf, &len))
-	{
-		printf("No information available\n");
-		return;
-	}
+    {
+      printf("No information available\n");
+      return;
+    }
 	else if (len <= 0)
-	{
-		printf("No station connected\n");
-		return;
-	}
+    {
+      printf("No station connected\n");
+      return;
+    }
 
 	for (i = 0; i < len; i += sizeof(struct iwinfo_assoclist_entry))
-	{
-		e = (struct iwinfo_assoclist_entry *) &buf[i];
+    {
+      e = (struct iwinfo_assoclist_entry *) &buf[i];
 
-		printf("%s  %s / %s (SNR %d)  %d ms ago\n",
-			format_bssid(e->mac),
-			format_signal(e->signal),
-			format_noise(e->noise),
-			(e->signal - e->noise),
-			e->inactive);
+      printf("%s  %s / %s (SNR %d)  %d ms ago\n",
+             format_bssid(e->mac),
+             format_signal(e->signal),
+             format_noise(e->noise),
+             (e->signal - e->noise),
+             e->inactive);
 
-		printf("	RX: %-38s  %8d Pkts.\n",
-			format_assocrate(&e->rx_rate),
-			e->rx_packets
-		);
+      printf("	RX: %-38s  %8d Pkts.\n",
+             format_assocrate(&e->rx_rate),
+             e->rx_packets
+             );
 
-		printf("	TX: %-38s  %8d Pkts.\n\n",
-			format_assocrate(&e->tx_rate),
-			e->tx_packets
-		);
-	}
+      printf("	TX: %-38s  %8d Pkts.\n\n",
+             format_assocrate(&e->tx_rate),
+             e->tx_packets
+             );
+    }
 }
 
 
@@ -757,12 +757,12 @@ static char * lookup_country(char *buf, int len, int iso3166)
 	struct iwinfo_country_entry *c;
 
 	for (i = 0; i < len; i += sizeof(struct iwinfo_country_entry))
-	{
-		c = (struct iwinfo_country_entry *) &buf[i];
+    {
+      c = (struct iwinfo_country_entry *) &buf[i];
 
-		if (c->iso3166 == iso3166)
-			return c->ccode;
-	}
+      if (c->iso3166 == iso3166)
+        return c->ccode;
+    }
 
 	return NULL;
 }
@@ -776,23 +776,23 @@ static void print_countrylist(const struct iwinfo_ops *iw, const char *ifname)
 	const struct iwinfo_iso3166_label *l;
 
 	if (iw->countrylist(ifname, buf, &len))
-	{
-		printf("No country code information available\n");
-		return;
-	}
+    {
+      printf("No country code information available\n");
+      return;
+    }
 
 	if (iw->country(ifname, curcode))
 		memset(curcode, 0, sizeof(curcode));
 
 	for (l = IWINFO_ISO3166_NAMES; l->iso3166; l++)
-	{
-		if ((ccode = lookup_country(buf, len, l->iso3166)) != NULL)
-		{
-			printf("%s %4s	%c%c\n",
-				strncmp(ccode, curcode, 2) ? " " : "*",
-				ccode, (l->iso3166 / 256), (l->iso3166 % 256));
-		}
-	}
+    {
+      if ((ccode = lookup_country(buf, len, l->iso3166)) != NULL)
+        {
+          printf("%s %4s	%c%c\n",
+                 strncmp(ccode, curcode, 2) ? " " : "*",
+                 ccode, (l->iso3166 / 256), (l->iso3166 % 256));
+        }
+    }
 }
 
 static void print_htmodelist(const struct iwinfo_ops *iw, const char *ifname)
@@ -800,10 +800,10 @@ static void print_htmodelist(const struct iwinfo_ops *iw, const char *ifname)
 	int i, htmodes = 0;
 
 	if (iw->htmodelist(ifname, &htmodes))
-	{
-		printf("No HT mode information available\n");
-		return;
-	}
+    {
+      printf("No HT mode information available\n");
+      return;
+    }
 
 	for (i = 0; i < ARRAY_SIZE(IWINFO_HTMODE_NAMES); i++)
 		if (htmodes & (1 << i))
@@ -817,16 +817,16 @@ static void lookup_phy(const struct iwinfo_ops *iw, const char *section)
 	char buf[IWINFO_BUFSIZE];
 
 	if (!iw->lookup_phy)
-	{
-		fprintf(stderr, "Not supported\n");
-		return;
-	}
+    {
+      fprintf(stderr, "Not supported\n");
+      return;
+    }
 
 	if (iw->lookup_phy(section, buf))
-	{
-		fprintf(stderr, "Phy not found\n");
-		return;
-	}
+    {
+      fprintf(stderr, "Phy not found\n");
+      return;
+    }
 
 	printf("%s\n", buf);
 }
@@ -1023,14 +1023,21 @@ void *ConnectionCheckRun(void *arg)
     checkReStart:
       debug_msg("before sem_wait----------------------------------------\n");
 
-      isChecking = false;
+      g_isChecking = false;
       sem_wait(&g_semConnectionCheck);
-      isChecking = true;
+      g_isChecking = true;
 
 
       debug_msg("after sem_wait----------------------------------------\n");
 
       CloseTCPConnection();
+
+      if (deviceModel == AP) {
+        debug_msg("current deviceModel is AP");
+        continue;
+      }else{
+        //PASS
+      }
 
       int iCurrentNumOfCheck = 0;
 
@@ -1051,16 +1058,47 @@ void *ConnectionCheckRun(void *arg)
 
           iCurrentNumOfCheck ++;
 
+          int ret = changeToSta();
+          if (ret == 0) {
+          }else{
+            continue;
+          }
+          if (g_dhcpStatus == 0) { //1:静态   0:动态
+          }else{
+            ret = setDhcpInfo();
+            if (ret == 0) {
+            }else{
+              continue;
+            }
+          }
+
+          char temIP[LEN_OF_IPADDRESS] = {0};
+          GetIP(NAME_OF_NETCARD_OF_CLIENT, temIP);
+          if(temIP[0] != 0 || temIP[0] != '\0')
+            {
+              debug_msg("Client Model GetIP() = %s\n", temIP);
+            }
+          else
+            {
+              debug_msg("can not get ip\n");
+              deviceStatus = JOIN_ROUTE_FAILED;
+              continue;
+            }
+
           if(checkConnectMQTT() == 0){
             break;
           }
-
         } /* end while */
     } /* end for */
   pthread_exit((void*)0);
 }
 
 
+int scanWifi(){
+  const struct iwinfo_ops *iw;
+  iw = iwinfo_backend(NAME_OF_NETCARD_OF_CLIENT);
+  print_scanlist(iw, NAME_OF_NETCARD_OF_CLIENT);
+}
 
 int checkConnectMQTT(){
 
