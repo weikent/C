@@ -26,7 +26,7 @@ RM = rm -f
 
 SOURCECPP =
 
-SOURCEC = ReadSocketBuffer.c packMessage.c global.c comm.c SendHeart.c ConnectionCheck.c SendSocket.c TcpClient.c tool.c ../../common/md5.c ../../common/msgQ.c DeviceModelChange.c ../../common/dealJson.c ../../common/cJSON.c
+SOURCEC = ReadSocketBuffer.c packMessage.c global.c comm.c SendHeart.c ConnectionCheck.c SendSocket.c TcpClient.c tool.c ../../common/md5.c ../../common/msgQ.c DeviceModelChange.c ../../common/dealJson.c ../../common/cJSON.c socketSerialPort.c
 
 OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
 

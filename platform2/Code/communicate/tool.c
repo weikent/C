@@ -918,9 +918,9 @@ int getCommandResult(char *command, char **buf){
 
   stream = popen(command, "r");
 
-  fread( buf, sizeof(char), sizeof(buf), stream);
+  fread( *buf, sizeof(char), sizeof(*buf), stream);
 
-  printf("stream = %s", buf);
+  printf("stream = %s", *buf);
   pclose( stream );
   return 0;
 }

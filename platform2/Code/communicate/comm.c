@@ -61,6 +61,8 @@ void initial()
   /* signal(SIGCHLD, SIG_IGN); */
 
 
+  init_serial();
+
   strcpy(g_serverIP, "42.96.168.137");
   g_serverPort = 1883;
 

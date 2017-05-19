@@ -66,12 +66,15 @@ void *DeviceModelChange(void *arg){
       sprintf(command, "uci get wireless.sta.disabled");
 
       int a = getCommandResult(command, &buf);
-      printf("sta.disabled = %s", buf);
 
+      debug_msg("sta.disabled = %s", buf);
 
-      if (strcmp(buf, "0") == 0) {
+      printf("buf = %s\n", buf);
+      if (strncmp(buf, "0", 1) == 0) {
+        debug_msg( "----");
         deviceModel = STATION;
       }else{
+        debug_msg("=====");
         deviceModel = AP;
         g_isConnected = false;
         g_isCreated = false;

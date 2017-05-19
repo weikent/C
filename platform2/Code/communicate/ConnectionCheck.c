@@ -1035,60 +1035,59 @@ void *ConnectionCheckRun(void *arg)
       if (deviceModel == AP) {
         debug_msg("current deviceModel is AP");
         continue;
-      }else{
-        //PASS
-      }
+      }else{ // current deviceModel is STATION
+        
+        int iCurrentNumOfCheck = 0;
 
-      int iCurrentNumOfCheck = 0;
+        /* 生成一个随即数。在此随机数的基础上计算每次网络检查的时间间隔 */
+        struct timeval tv;
+        gettimeofday(&tv,NULL);
+        long time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+        int randSeed = time % 3000;
 
-      /* 生成一个随即数。在此随机数的基础上计算每次网络检查的时间间隔 */
-      struct timeval tv;
-      gettimeofday(&tv,NULL);
-      long time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-      int randSeed = time % 3000;
+        srand((unsigned) randSeed);
+        long long lli = rand();
+        long int iRandomBasicNum = lli % 3000;
+        debug_msg("iRandombasicnum = %ld\n", iRandomBasicNum);
+        while(1)
+          {
+            /* 根据检查次数，确定等待的时间间隔 */
+            usleep(iRandomBasicNum * 1000 * pow(2.0, iCurrentNumOfCheck));
 
-      srand((unsigned) randSeed);
-      long long lli = rand();
-      long int iRandomBasicNum = lli % 3000;
-      debug_msg("iRandombasicnum = %ld\n", iRandomBasicNum);
-      while(1)
-        {
-          /* 根据检查次数，确定等待的时间间隔 */
-          usleep(iRandomBasicNum * 1000 * pow(2.0, iCurrentNumOfCheck));
+            iCurrentNumOfCheck ++;
 
-          iCurrentNumOfCheck ++;
-
-          int ret = changeToSta();
-          if (ret == 0) {
-          }else{
-            continue;
-          }
-          if (g_dhcpStatus == 0) { //1:静态   0:动态
-          }else{
-            ret = setDhcpInfo();
+            int ret = changeToSta();
             if (ret == 0) {
             }else{
               continue;
             }
-          }
-
-          char temIP[LEN_OF_IPADDRESS] = {0};
-          GetIP(NAME_OF_NETCARD_OF_CLIENT, temIP);
-          if(temIP[0] != 0 || temIP[0] != '\0')
-            {
-              debug_msg("Client Model GetIP() = %s\n", temIP);
-            }
-          else
-            {
-              debug_msg("can not get ip\n");
-              deviceStatus = JOIN_ROUTE_FAILED;
-              continue;
+            if (g_dhcpStatus == 0) { //1:静态   0:动态
+            }else{
+              ret = setDhcpInfo();
+              if (ret == 0) {
+              }else{
+                continue;
+              }
             }
 
-          if(checkConnectMQTT() == 0){
-            break;
-          }
-        } /* end while */
+            char temIP[LEN_OF_IPADDRESS] = {0};
+            GetIP(NAME_OF_NETCARD_OF_CLIENT, temIP);
+            if(temIP[0] != 0 || temIP[0] != '\0')
+              {
+                debug_msg("Client Model GetIP() = %s\n", temIP);
+              }
+            else
+              {
+                debug_msg("can not get ip\n");
+                deviceStatus = JOIN_ROUTE_FAILED;
+                continue;
+              }
+
+            if(checkConnectMQTT() == 0){
+              break;
+            }
+          } /* end while */
+      }
     } /* end for */
   pthread_exit((void*)0);
 }

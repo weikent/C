@@ -19,6 +19,9 @@ extern "C"
 #include "../../common/message.h"
 #include <pthread.h>
 #include <semaphore.h>
+#include "socketSerialPort.h"
+#include "string.h"
+
 
 
 #define DEBUG 1			/* switch of print debug info */
@@ -26,9 +29,16 @@ extern "C"
 #ifdef DEBUG
 #define debug_msg(args...) do                                           \
     {                                                                   \
+      char tem[2000] = {0};                                             \
+      char tem1[1500] = {0};                                            \
+      sprintf(tem, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
+      sprintf(tem1, args);                                               \
+      strcat(tem1,"\r\n");                                              \
+      strcat(tem, tem1);                                                \
       fprintf(stdout, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
       fprintf(stdout, args);                                            \
       fprintf(stdout, "\n");                                            \
+      uart_send(serial_fd,tem,strlen(tem));                           \
     }                                                                   \
   while(0)
 #else
