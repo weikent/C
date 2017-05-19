@@ -99,3 +99,18 @@ int msgID = 0;
 
 enum deviceModel deviceModel = AP;
 enum deviceStatus deviceStatus = JOIN_ROUTE_FAILED;
+
+unsigned char key1[] = "12345678";
+unsigned char key2[] = "abcdefgh";
+unsigned char key3[] = "12345678";
+
+unsigned char key1API[] = "12345678";
+unsigned char key2API[] = "abcdefgh";
+unsigned char key3API[] = "12345678";
+
+_Bool isReceived3DesChange = false;
+_Bool is3DesKeyChanged = false;
+
+
+char *mqttHeart = NULL;
+int mqttHeartLen = 0;

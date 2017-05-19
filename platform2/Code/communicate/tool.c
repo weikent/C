@@ -645,76 +645,76 @@ int ReplaceDevID(char *strJson)
  * =======================================================================================
  */
 
-/* int encry(unsigned char *jsonStr, int len, char *key1, char *key2, char *key3) */
-/* { */
-/* //    unsigned char desOut[TEXT_SIZE + 8] = {0}; */
-/*     unsigned char *desOut = (unsigned char*)malloc(len + 8); */
-/*     memset(desOut, 0, len + 8); */
-/*     unsigned char desTempOut[9] = {0}; */
-/*     int i = 0; */
-/*     while(1) */
-/*     { */
-/*         unsigned char temp[8] = {0}; */
-/*         bzero(desTempOut, 9); */
-/*         if ((i + 8) <= len) */
-/*         { */
-/*             memcpy(temp, jsonStr + i, 8); */
-/* //            printf ("temp = %s\n", temp); */
+int encry(unsigned char *jsonStr, int len, char *key1, char *key2, char *key3)
+{
+//    unsigned char desOut[TEXT_SIZE + 8] = {0};
+    unsigned char *desOut = (unsigned char*)malloc(len + 8);
+    memset(desOut, 0, len + 8);
+    unsigned char desTempOut[9] = {0};
+    int i = 0;
+    while(1)
+    {
+        unsigned char temp[8] = {0};
+        bzero(desTempOut, 9);
+        if ((i + 8) <= len)
+        {
+            memcpy(temp, jsonStr + i, 8);
+//            printf ("temp = %s\n", temp);
   
-/*             desD(temp, desTempOut, key1, key2, key3); */
-/* /\*             printf ("desTempOut = %s\n", desTempOut); *\/ */
-/* /\*             for (int i = 0; i < 8; ++i) *\/ */
-/* /\*             { *\/ */
-/* /\*                 printf ("%0X \n",desTempOut[i]); *\/ */
-/* /\*             } *\/ */
-/* /\* //            strncat(desOut, desTempOut, 8); *\/ */
-/*             int j = 0; */
-/*             for (j = 0; j < 8; j++) */
+            desD(temp, desTempOut, key1, key2, key3);
+/*             printf ("desTempOut = %s\n", desTempOut); */
+/*             for (int i = 0; i < 8; ++i) */
 /*             { */
-/*                 desOut[i+j] = desTempOut[j]; */
+/*                 printf ("%0X \n",desTempOut[i]); */
 /*             } */
+/* //            strncat(desOut, desTempOut, 8); */
+            int j = 0;
+            for (j = 0; j < 8; j++)
+            {
+                desOut[i+j] = desTempOut[j];
+            }
 
-/*             /\* printf ("i = %d\n", i); *\/ */
-/*             /\* for (int k = 0; k < 8; ++k) *\/ */
-/*             /\* { *\/ */
-/*             /\*     printf ("======%0X \n",desOut[k+i]); *\/ */
-/*             /\* } *\/ */
+            /* printf ("i = %d\n", i); */
+            /* for (int k = 0; k < 8; ++k) */
+            /* { */
+            /*     printf ("======%0X \n",desOut[k+i]); */
+            /* } */
 
-/*             i += 8; */
+            i += 8;
 
 
-/*         } */
-/*         else */
-/*         { */
-/*             memcpy(temp, jsonStr + i, len - i); */
-/*             int k = 0; */
-/*             for (k = len - i; k < 8; k++) */
-/*             { */
-/* //                sprintf(temp + k, "%0x", 8 - (strlen(jsonStr) -i)); */
-/*                 temp[k] = 8 - (len -i); */
-/*             } */
-/* //            printf ("temp = %s\n", temp); */
-/*             desD(temp, desTempOut, key1, key2, key3); */
-/* //            printf ("desTempOut = %s\n", desTempOut); */
-/*             /\* for (int i = 0; i < 8; ++i) *\/ */
-/*             /\* { *\/ */
-/*             /\*     printf ("%0X \n",desTempOut[i]); *\/ */
-/*             /\* } *\/ */
-/*             int j = 0; */
-/*             for (j = 0; j < 8; j++) */
-/*             { */
-/*                 desOut[i+j] = desTempOut[j]; */
-/*             } */
-/*             i += 8; */
+        }
+        else
+        {
+            memcpy(temp, jsonStr + i, len - i);
+            int k = 0;
+            for (k = len - i; k < 8; k++)
+            {
+//                sprintf(temp + k, "%0x", 8 - (strlen(jsonStr) -i));
+                temp[k] = 8 - (len -i);
+            }
+//            printf ("temp = %s\n", temp);
+            desD(temp, desTempOut, key1, key2, key3);
+//            printf ("desTempOut = %s\n", desTempOut);
+            /* for (int i = 0; i < 8; ++i) */
+            /* { */
+            /*     printf ("%0X \n",desTempOut[i]); */
+            /* } */
+            int j = 0;
+            for (j = 0; j < 8; j++)
+            {
+                desOut[i+j] = desTempOut[j];
+            }
+            i += 8;
 
-/*             break; */
-/*         } */
-/*     } */
+            break;
+        }
+    }
 
-/*     memcpy(jsonStr, desOut, len + 8); */
-/*     free(desOut); */
-/*     return i; */
-/* } */
+    memcpy(jsonStr, desOut, len + 8);
+    free(desOut);
+    return i;
+}
 
 
 
@@ -736,55 +736,55 @@ int ReplaceDevID(char *strJson)
  * =======================================================================================
  */
 
-/* int decry(unsigned char *jsonStr, int len, char *key1, char *key2, char *key3) */
-/* { */
-/* //    unsigned char desOut[TEXT_SIZE + 8] = {0}; */
-/*     unsigned char *desOut = (unsigned char*)malloc(len + 8); */
-/*     unsigned char desTempOut[9] = {0}; */
-/*     int i = 0; */
+int decry(unsigned char *jsonStr, int len, char *key1, char *key2, char *key3)
+{
+//    unsigned char desOut[TEXT_SIZE + 8] = {0};
+    unsigned char *desOut = (unsigned char*)malloc(len + 8);
+    unsigned char desTempOut[9] = {0};
+    int i = 0;
 
 
-/*     /\* for (int i = 0; i < len; ++i) *\/ */
-/*     /\* { *\/ */
-/*     /\*     printf ("%02X ", jsonStr[i]); *\/ */
-/*     /\* } *\/ */
+    /* for (int i = 0; i < len; ++i) */
+    /* { */
+    /*     printf ("%02X ", jsonStr[i]); */
+    /* } */
 
-/*     /\* printf (" \n"); *\/ */
+    /* printf (" \n"); */
 
-/*     while(1) */
-/*     { */
-/*         bzero(desTempOut, 0); */
-/*         unsigned char temp[8] = {0}; */
+    while(1)
+    {
+        bzero(desTempOut, 0);
+        unsigned char temp[8] = {0};
 
-/*         if ((i + 8) <= len) */
-/*         { */
-/*             memcpy(temp, jsonStr + i, 8); */
-/* //            i += 8; */
-/*             /\* for (int i = 0; i < 8; ++i) *\/ */
-/*             /\* { *\/ */
-/*             /\*     printf ("%02X \n", temp[i]); *\/ */
-/*             /\* } *\/ */
+        if ((i + 8) <= len)
+        {
+            memcpy(temp, jsonStr + i, 8);
+//            i += 8;
+            /* for (int i = 0; i < 8; ++i) */
+            /* { */
+            /*     printf ("%02X \n", temp[i]); */
+            /* } */
 
-/*             desE(desTempOut, temp, key1, key2, key3); */
+            desE(desTempOut, temp, key1, key2, key3);
 
-/*             //          strncat(desOut, desTempOut, 8); */
-/*             memcpy(desOut + i, desTempOut, 8); */
-/*             i += 8; */
-/*         } */
-/*         else */
-/*         { */
-/*             break; */
-/*         } */
-/* //        printf ("desTempOut = %s\n", desTempOut); */
-/*     } */
-/* //    printf("desOut = %s \n", desOut); */
+            //          strncat(desOut, desTempOut, 8);
+            memcpy(desOut + i, desTempOut, 8);
+            i += 8;
+        }
+        else
+        {
+            break;
+        }
+//        printf ("desTempOut = %s\n", desTempOut);
+    }
+//    printf("desOut = %s \n", desOut);
 
 
-/* //    strcpy(jsonStr, desOut); */
-/*     memcpy(jsonStr, desOut, len); */
-/*     free(desOut); */
-/*     return 0; */
-/* } */
+//    strcpy(jsonStr, desOut);
+    memcpy(jsonStr, desOut, len);
+    free(desOut);
+    return 0;
+}
 
 
 int isRightIP(const char *str)
@@ -1284,6 +1284,8 @@ int setDhcpInfo()
  * 1: change failed.
  */
 int changeToSta(){
+  debug_msg("change Device to STATION model.");
+
   char command[100] = {0};
   int ret = -1;
 
@@ -1360,6 +1362,7 @@ int changeToSta(){
  * 1: change failed
  */
 int changeToAP(){
+  debug_msg("Change device to AP model.");
   char command[100] = {0};
   int ret = -1;
   bzero(command, 100);

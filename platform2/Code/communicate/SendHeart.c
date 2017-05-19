@@ -102,7 +102,7 @@ void *SendHeartRun(void *arg)
 
             intervalOfSendPingREQ ++;
             intervalOfSendGetTime ++;
-
+            intervalOfSendHeart ++;
 
             if (intervalOfSendPingREQ > intervalKeepAlive) {
 
@@ -118,6 +118,13 @@ void *SendHeartRun(void *arg)
               intervalOfSendGetTime = 0;
               /* TODO: get time form topicServer */
             }
+
+            if (intervalOfSendHeart > 12) {
+              intervalOfSendHeart = 0;
+              debug_msg("---");
+              sendSocket(mqttHeart, mqttHeartLen, "mqttHeart");
+            }
+
           } else {
             debug_msg("---");
             // is not received suback from server.

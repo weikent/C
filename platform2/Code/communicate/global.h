@@ -32,13 +32,10 @@ extern "C"
       char tem[2000] = {0};                                             \
       char tem1[1500] = {0};                                            \
       sprintf(tem, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
-      sprintf(tem1, args);                                               \
+      sprintf(tem1, args);                                              \
       strcat(tem1,"\r\n");                                              \
       strcat(tem, tem1);                                                \
-      fprintf(stdout, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
-      fprintf(stdout, args);                                            \
-      fprintf(stdout, "\n");                                            \
-      uart_send(serial_fd,tem,strlen(tem));                           \
+      uart_send(serial_fd,tem,strlen(tem));                             \
     }                                                                   \
   while(0)
 #else
@@ -46,6 +43,9 @@ extern "C"
 #endif
 
 
+
+
+#define needEncyrpt 0
   #define CONFIGFILE "./config"
 
 
@@ -169,6 +169,21 @@ extern "C"
 
 
 
+  extern unsigned char key1[8];
+  extern unsigned char key2[8];
+  extern unsigned char key3[8];
+
+  extern unsigned char key1API[8];
+  extern unsigned char key2API[8];
+  extern unsigned char key3API[8];
+
+  extern _Bool is3DesKeyChanged;
+  extern _Bool isReceived3DesChange;
+
+
+
+  extern char *mqttHeart;
+  extern int mqttHeartLen;
 
 
   // extern pthread_mutex_t g_pthDealmap;

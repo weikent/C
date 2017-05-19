@@ -63,6 +63,9 @@ void initial()
 
   init_serial();
 
+
+
+
   strcpy(g_serverIP, "42.96.168.137");
   g_serverPort = 1883;
 
@@ -157,13 +160,78 @@ void initial()
 }
 
 
+int createHeart(){
+  GetMAC("apcli0", g_mac);
+  debug_msg("g_mac = %s\n", g_mac);
+  //  strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDeDDDDDDDDD");
+
+  char heart[100] = {0};
+  sprintf(heart, "{\"optCode\":\"heart\",\"devID\":\"%s\"}", g_mac);
+  debug_msg ("Heart before encry : %s\n", heart);
+
+
+  if (needEncyrpt == 1) {
+    int clientMessageLen = encry(heart, strlen(heart), key1, key2, key3);
+
+    bool bbreakLine=false;
+    unsigned long cbB64Len, cbBytes;
+    char *szBase64;
+    debug_msg("--");
+    cbBytes = clientMessageLen;
+
+    //計算所需記憶體空間
+    cbB64Len = (cbBytes+2)/3*4+1;
+    if (bbreakLine) cbB64Len += cbB64Len/76*2;
+    //配置記憶體空間
+    debug_msg("--");
+    szBase64 = (char*)malloc(cbB64Len);
+    //呼叫編碼參數說明:szBase64=編碼結果;pbData=原始資料;
+    //cbBytes=資料長度;bbreakLine=自動換行(true/false);
+    //若bbreakLine設為true則每76個字即插入換行符號
+    //若為false則輸出不換行之連續長字串
+    debug_msg("--");
+    int base64Len= b64encode(szBase64, heart, cbBytes, bbreakLine);
+    // printf("\nbase64 encoded:\n%s\n", szBase64);
+    // printf("cbB64len = %d\njj = %d\n", cbB64Len, base64Len);
+    // int i = 0;
+    // for (i = 0; i < base64Len; i++) {
+    //     printf("%02X,", szBase64[i]);
+    // };
+    // printf("\n" );
+
+    mqttHeart = NULL;
+    mqttHeartLen =  mqttPublish(base64Len, szBase64, &mqttHeart);
+
+    debug_msg("--");
+
+    free(szBase64);
+  }else{
+    mqttHeart = NULL;
+    mqttHeartLen = mqttPublish(strlen(heart), heart, &mqttHeart);
+  }
+  int i = 0;
+  for (i = 0; i < mqttHeartLen; i++) {
+    printf("%02X,", mqttHeart[i]);
+  }
+  printf("\n");
+ 
+}
+
+
 int main(int argc,char ** argv)
 {
   initial();
+  createHeart();
 
-  GetMAC("apcli0", g_mac);
-  debug_msg("g_mac = %s\n", g_mac);
-  /* strcpy(g_mac, "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"); */
+  if (g_serverWebsite[0] != 0 && g_serverPort != 0 && g_ssid[0] != 0 && strcmp(g_ssid, "empty") != 0)
+    {
+      changeToSta();
+      deviceStatus = CONNECT_SERVER_FILED;
+    }
+  else
+    {
+      changeToAP();
+    }
 
 
   int temp;

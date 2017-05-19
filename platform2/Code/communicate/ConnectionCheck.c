@@ -1036,7 +1036,7 @@ void *ConnectionCheckRun(void *arg)
         debug_msg("current deviceModel is AP");
         continue;
       }else{ // current deviceModel is STATION
-        
+
         int iCurrentNumOfCheck = 0;
 
         /* 生成一个随即数。在此随机数的基础上计算每次网络检查的时间间隔 */
@@ -1056,11 +1056,7 @@ void *ConnectionCheckRun(void *arg)
 
             iCurrentNumOfCheck ++;
 
-            int ret = changeToSta();
-            if (ret == 0) {
-            }else{
-              continue;
-            }
+            int ret = 0;
             if (g_dhcpStatus == 0) { //1:静态   0:动态
             }else{
               ret = setDhcpInfo();
@@ -1101,6 +1097,25 @@ int scanWifi(){
 
 int checkConnectMQTT(){
 
+  if (isRightIP(g_serverWebsite) > 0)
+    {
+      debug_msg("isRightIP\n");
+      strcpy(g_serverIP, g_serverWebsite);
+    }
+  else
+    {
+      struct hostent *host;
+
+      if((host = gethostbyname(g_serverWebsite)) == NULL)
+        {
+          debug_msg("can not get serverIP\n");
+          deviceStatus = CONNECT_SERVER_FILED;
+          return -1;
+        }
+
+      strcpy(g_serverIP, inet_ntoa(*((struct in_addr *)host->h_addr)));
+    }
+
   errno = 0;
 
   /* 保证同一时间只有一个线程在操作g_iClientModelTCPSocket */
@@ -1119,6 +1134,8 @@ int checkConnectMQTT(){
 
   bzero(&s_add,sizeof(struct sockaddr_in));
   s_add.sin_family=AF_INET;
+  debug_msg("g_serverIP = %s\n", g_serverIP);
+  debug_msg("g_serverPort = %d\n", g_serverPort);
   inet_pton(AF_INET, g_serverIP, &s_add.sin_addr);
   s_add.sin_port=htons(g_serverPort); 
 
@@ -1133,7 +1150,6 @@ int checkConnectMQTT(){
       debug_msg ("clientModelTCPSocket = %d\n", clientModelTCPSocket);
       CloseTCPConnection();
       debug_msg("clientModelTCPSocket = %d\n", clientModelTCPSocket);
-
 
       pthread_mutex_unlock(&g_pthTCPSocket);
       debug_msg("start unlock g_pthTCPSocket------------------------------\n");

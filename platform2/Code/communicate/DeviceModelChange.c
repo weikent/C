@@ -69,7 +69,7 @@ void *DeviceModelChange(void *arg){
 
       debug_msg("sta.disabled = %s", buf);
 
-      printf("buf = %s\n", buf);
+      debug_msg("buf = %s\n", buf);
       if (strncmp(buf, "0", 1) == 0) {
         debug_msg( "----");
         deviceModel = STATION;

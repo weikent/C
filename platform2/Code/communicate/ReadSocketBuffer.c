@@ -160,11 +160,12 @@ void *ReadSocketBufferRun(void *arg)
 
                     ret = readn(clientModelTCPSocket, &byte,1);
 
-                    fprintf(stdout,"buffer = %d\n", byte);
-                    fprintf(stdout,"ret = %d\n", ret);
+                    debug_msg("buffer = %d\n", byte);
+                    debug_msg("ret = %d\n", ret);
+
                     if (ret <= 0)
                     {
-                        fprintf(stdout,"errno = %d\n", errno);
+                        debug_msg("errno = %d\n", errno);
                         if (errno == EINTR || errno == EWOULDBLOCK || errno == EAGAIN)
                         {
                         }
@@ -179,7 +180,8 @@ void *ReadSocketBufferRun(void *arg)
                     }
                     else
                     {
-                        fprintf(stdout,"Hex byte = %02X\n", byte);
+                        debug_msg("Hex byte = %02X\n", byte);
+
                         if (byte == MESSAGE_TYPE_CONNACK) {
                             debug_msg("received connack\n");
 
@@ -198,11 +200,12 @@ void *ReadSocketBufferRun(void *arg)
                             bzero(buffer, remainingLength + 1);
                             ret = -1;
                             ret = readn(clientModelTCPSocket, buffer, remainingLength);
-                            printf("buffer[0] = %02x\n", buffer[0]);
-                            printf("buffer[1] = %02x\n", buffer[1]);
+                            debug_msg("buffer[0] = %02x\n", buffer[0]);
+                            debug_msg("buffer[1] = %02x\n", buffer[1]);
 
                             if (buffer[remainingLength - 1] == 0) {
                                 g_isConnected = true;
+                                debug_msg("connected!!!!!!!!!");
 //                                sem_post(&g_semSendHeart);
                             }
                             free(buffer);
@@ -536,7 +539,7 @@ static int changeTCPStatus()
 {
     if (shouldCloseSocket)
     {
-        debug_msg("shouldCloseSocket\n");
+         debug_msg("shouldCloseSocket\n");
         CloseTCPConnection();
     }
     return 0;
