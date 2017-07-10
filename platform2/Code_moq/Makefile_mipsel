@@ -1,0 +1,62 @@
+### Makefile --- 
+
+## Author: weishijian@localhost
+## Version: $Id: Makefile,v 0.0 2017/06/28 05:00:53 weishijian Exp $
+## Keywords: 
+## X-URL: 
+
+
+
+
+
+
+CC = gcc
+#CC = mipsel-openwrt-linux-gcc
+CXX = g++
+
+VPATH = 
+INCLUDE = -I/home/weishijian/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/include
+WALL = -Wall
+C99 = #-std=c99
+LDFLAGS = -L/home/weishijian/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/lib -lmosquitto -lpthread -ldl -lrt -lcares
+OPTIMIZE = -O2
+RM = rm -f
+
+
+SOURCECPP =
+
+SOURCEC = test.c
+
+OBJECTSCPP = $(SOURCECPP:%.cpp=%.o)
+
+OBJECTSC = $(SOURCEC:%.c=%.o)
+
+OBJS = $(OBJECTSC) $(OBJECTSCPP)
+
+
+TARGET = comm
+
+.PHONY = all
+.PHONY = clean
+all = clean $(TARGET)
+
+%.o : %.c
+	$(CC) -c $(WALL)  $< -o $@ $(INCLUDE) $(C99)
+
+%.o : %.cpp
+	$(CXX) -c $(WALL) $< -o $@ $(INCLUDE)
+
+$(TARGET): $(OBJECTSC) $(OBJECTSCPP)
+	$(CC) -o $(TARGET) $(INCLUDE)  $(OBJECTSC) $(OBJECTSCPP) $(THREAD) $(OPTIMIZE) $(C99) $(LDFLAGS)
+
+
+clean:
+	$(RM) $(OBJS) $(TARGET)
+
+install:
+#	cp *.h *.cpp *.c -r ../wpa
+
+
+
+
+### Makefile ends here
