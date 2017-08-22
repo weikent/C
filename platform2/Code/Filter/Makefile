@@ -39,6 +39,7 @@ TARGET =
 all :
 	$(MAKE) -f Makefile.Filter
 	$(MAKE) -f Makefile.forTest
+	$(MAKE) -f Makefile.forTest2
 
 %.o : %.c
 	$(CC) -c $(WALL)  $< -o $@ $(INCLUDE) $(C99)
@@ -52,8 +53,8 @@ $(TARGET): $(OBJECTSC) $(OBJECTSCPP)
 
 clean:
 	$(MAKE) clean -f Makefile.Filter
-	$(MAKE) clean -f Makefile.forTest
-
+#	$(MAKE) clean -f Makefile.forTest
+	$(MAKE) clean -f Makefile.forTest2
 install:
 #	cp *.h *.cpp *.c -r ../wpa
 

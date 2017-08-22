@@ -1,4 +1,4 @@
-/* 
+/*
  *     Created:  15 May 2013 14:45:57
  *     Author:   weishijian@ubuntu
  Description:  
@@ -61,13 +61,13 @@ void initial()
   /* signal(SIGCHLD, SIG_IGN); */
 
 
-  init_serial();
+  //  init_serial();
 
 
 
 
-  strcpy(g_serverIP, "42.96.168.137");
-  g_serverPort = 1883;
+  //  strcpy(g_serverIP, "85.119.83.194");
+  //  g_serverPort = 1883;
 
   pthread_mutex_init(&g_pthTCPSocket, NULL);
 
@@ -225,7 +225,7 @@ int main(int argc,char ** argv)
 
   if (g_serverWebsite[0] != 0 && g_serverPort != 0 && g_ssid[0] != 0 && strcmp(g_ssid, "empty") != 0)
     {
-      changeToSta();
+      //changeToSta();
       deviceStatus = CONNECT_SERVER_FILED;
     }
   else
@@ -295,24 +295,24 @@ int main(int argc,char ** argv)
     /* read_message(msgID, &msgReadMsgBuf, MY_MSG_TYPE); */
 
     /* debug_msg("the message is : %s,  the sender is : %d", msgReadMsgBuf.msg_text, msgReadMsgBuf.sender_type); */
+
     sleep(2);
 
-    if (g_isSubscribed) {
+    /* if (g_isSubscribed) { */
 
-      msgReadMsgBuf.msg_type = FILTER_MSG_TYPE;
-      msgReadMsgBuf.sender_type = MY_MSG_TYPE;
+    /*   msgReadMsgBuf.msg_type = FILTER_MSG_TYPE; */
+    /*   msgReadMsgBuf.sender_type = MY_MSG_TYPE; */
 
-      int i = 0;
-      for (i = 0; i < 1; i++) {
-        bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text));
-        char command[2] = {0};
-        sprintf(command, "%d", i);
-        strcpy(msgReadMsgBuf.msg_text, command);
-        send_message(msgID, &msgReadMsgBuf, FILTER_MSG_TYPE, command);
-      }
+    /*   int i = 0; */
+    /*   for (i = 0; i < 1; i++) { */
+    /*     bzero(msgReadMsgBuf.msg_text, sizeof(msgReadMsgBuf.msg_text)); */
+    /*     char command[2] = {0}; */
+    /*     sprintf(command, "%d", i); */
+    /*     strcpy(msgReadMsgBuf.msg_text, command); */
+    /*     send_message(msgID, &msgReadMsgBuf, FILTER_MSG_TYPE, command); */
+    /*   } */
 
-    }
-
+    /* } */
   }
 }
 

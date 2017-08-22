@@ -57,29 +57,30 @@ void *DeviceModelChange(void *arg){
   for ( ;  ;  )
     {
 
-      sleep(5);
-      char   *buf;
-      buf = malloc(20);
-      memset( buf, '\0', 20);
+      /* sleep(5); */
+      /* char   *buf; */
+      /* buf = malloc(20); */
+      /* memset( buf, '\0', 20); */
 
-      char command[100] = {0};
-      sprintf(command, "uci get wireless.sta.disabled");
+      /* char command[100] = {0}; */
+      /* sprintf(command, "uci get wireless.sta.disabled"); */
 
-      int a = getCommandResult(command, &buf);
+      /* int a = getCommandResult(command, &buf); */
 
-      debug_msg("sta.disabled = %s", buf);
+      /* debug_msg("sta.disabled = %s", buf); */
 
-      debug_msg("buf = %s\n", buf);
-      if (strncmp(buf, "0", 1) == 0) {
-        debug_msg( "----");
-        deviceModel = STATION;
-      }else{
-        debug_msg("=====");
-        deviceModel = AP;
-        g_isConnected = false;
-        g_isCreated = false;
-        g_isSubscribed = false;
-      }
-      free(buf);
+      /* debug_msg("buf = %s\n", buf); */
+      /* if (strncmp(buf, "0", 1) == 0) { */
+      /*   debug_msg( "----"); */
+      /*   deviceModel = STATION; */
+      /* }else{ */
+      /*   debug_msg("====="); */
+      /*   deviceModel = AP; */
+      /*   g_isConnected = false; */
+      /*   g_isCreated = false; */
+      /*   g_isSubscribed = false; */
+      /* } */
+      /* free(buf); */
+      deviceModel = STATION;
     }
 }

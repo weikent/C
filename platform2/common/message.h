@@ -16,7 +16,13 @@ extern "C"
     long int msg_type;
     long int sender_type;
     char msg_text[MAX_MSG_TEXT_SIZE];
-  } MsgData;
+  } myMsgBuf;
+
+#define SHARED_TEXT_SIZE 100
+  typedef struct shared_use_st{
+    int written;
+    unsigned char text[SHARED_TEXT_SIZE];
+  } shared_use_st;
 
 #ifdef __cplusplus
 }

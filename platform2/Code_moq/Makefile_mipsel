@@ -10,15 +10,15 @@
 
 
 
-CC = gcc
-#CC = mipsel-openwrt-linux-gcc
+#CC = gcc
+CC = mipsel-openwrt-linux-gcc
 CXX = g++
 
 VPATH = 
-INCLUDE = -I/home/weishijian/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/include
+INCLUDE = -I/home/startech/SDK/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/include
 WALL = -Wall
 C99 = #-std=c99
-LDFLAGS = -L/home/weishijian/SDK7688/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/lib -lmosquitto -lpthread -ldl -lrt -lcares
+LDFLAGS = -L/home/startech/SDK/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/lib -lmosquitto -lpthread -ldl -lrt -lcares -lssl -lcrypto
 OPTIMIZE = -O2
 RM = rm -f
 

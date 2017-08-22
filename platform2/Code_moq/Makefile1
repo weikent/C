@@ -23,6 +23,7 @@ endef
 define Package/comm/install
 	$(INSTALL_DIR) $(1)/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/comm $(1)/bin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/mosquitto.org.crt $(1)/bin/
 endef
 
 $(eval $(call BuildPackage,comm))

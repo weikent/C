@@ -1284,6 +1284,7 @@ int setDhcpInfo()
  * 1: change failed.
  */
 int changeToSta(){
+  return 0;
   debug_msg("change Device to STATION model.");
 
   char command[100] = {0};
@@ -1362,6 +1363,7 @@ int changeToSta(){
  * 1: change failed
  */
 int changeToAP(){
+  return 0;
   debug_msg("Change device to AP model.");
   char command[100] = {0};
   int ret = -1;

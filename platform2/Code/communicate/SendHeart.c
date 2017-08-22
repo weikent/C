@@ -147,6 +147,7 @@ void *SendHeartRun(void *arg)
 
             for (i = 0; i < count; i++) {
               unsigned char *topicFilter = malloc(strlen(g_subscribeTopicFilter[i]) + strlen(g_mac) + 1);
+              
               bzero(topicFilter, strlen(g_subscribeTopicFilter[i]) + strlen(g_mac) + 1);
 
               memcpy(topicFilter, g_subscribeTopicFilter[i], strlen(g_subscribeTopicFilter[i]));
@@ -154,7 +155,7 @@ void *SendHeartRun(void *arg)
               memcpy(topicFilter + strlen(g_subscribeTopicFilter[i]), g_mac, strlen(g_mac));
 
               printf("topicFilter len = %lu\n", strlen(topicFilter));
-
+              printf("topicFilter = %s\n", topicFilter);
               *(mqtt->variableHeader.topicFilterArr + i) = malloc(strlen(topicFilter) + 1);
 
               bzero(*(mqtt->variableHeader.topicFilterArr + i), strlen(topicFilter) + 1);
@@ -199,9 +200,9 @@ void *SendHeartRun(void *arg)
 
           mqtt->fixedHeader.messageType = CONNECT;
 
-          mqtt->playLoad.clientID = malloc(LEN_OF_MAC + 1);
-          bzero(mqtt->playLoad.clientID, LEN_OF_MAC + 1);
-          memcpy(mqtt->playLoad.clientID, g_mac, LEN_OF_MAC);
+          mqtt->playLoad.clientID = malloc(LEN_OF_MAC);
+          bzero(mqtt->playLoad.clientID, LEN_OF_MAC);
+          memcpy(mqtt->playLoad.clientID, g_mac, LEN_OF_MAC - 1);
 
           unsigned char *temp = NULL;
 

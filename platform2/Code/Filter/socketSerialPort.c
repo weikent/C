@@ -112,7 +112,8 @@ int uart_recv(int fd, char *data, int datalen)
 
   FD_ZERO(&fs_read);
   FD_SET(fd, &fs_read);
-  tv_timeout.tv_sec  = (10*20/baudRete+2);
+//  tv_timeout.tv_sec  = (10*20/baudRete+2);
+tv_timeout.tv_sec = 3;
   tv_timeout.tv_usec = 0;
 
   ret = select(fd+1, &fs_read, NULL, NULL, &tv_timeout);

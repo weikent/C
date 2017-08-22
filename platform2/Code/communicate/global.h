@@ -24,23 +24,39 @@ extern "C"
 
 
 
+
 #define DEBUG 1			/* switch of print debug info */
 
 #ifdef DEBUG
 #define debug_msg(args...) do                                           \
     {                                                                   \
-      char tem[2000] = {0};                                             \
-      char tem1[1500] = {0};                                            \
-      sprintf(tem, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
-      sprintf(tem1, args);                                              \
-      strcat(tem1,"\r\n");                                              \
-      strcat(tem, tem1);                                                \
-      uart_send(serial_fd,tem,strlen(tem));                             \
+      fprintf(stdout, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
+      fprintf(stdout, args);                                            \
+      fprintf(stdout, "\n");                                            \
     }                                                                   \
   while(0)
 #else
 #define debug_msg(arg...) ((void)0)
 #endif
+
+
+// #define DEBUG 1			/* switch of print debug info */
+
+// #ifdef DEBUG
+// #define debug_msg(args...) do                                           \
+//     {                                                                   \
+//       char tem[2000] = {0};                                             \
+//       char tem1[1500] = {0};                                            \
+//       sprintf(tem, "%-30s[%4d]_%-20s : ", __FILE__, __LINE__, __FUNCTION__); \
+//       sprintf(tem1, args);                                              \
+//       strcat(tem1,"\r\n");                                              \
+//       strcat(tem, tem1);                                                \
+//       uart_send(serial_fd,tem,strlen(tem));                             \
+//     }                                                                   \
+//   while(0)
+// #else
+// #define debug_msg(arg...) ((void)0)
+// #endif
 
 
 
@@ -76,7 +92,7 @@ extern "C"
 #define NAME_OF_NETCARD_OF_CLIENT "apcli0"
 
 #define LEN_OF_IPADDRESS 16	/* len of ip address */
-#define LEN_OF_MAC 32 		/* Device Mac 's length */
+#define LEN_OF_MAC 33 		/* Device Mac 's length */
 #define LEN_OF_WIFIINFO 128	/* len of wifi info */
 #define LEN_OF_WEBSITE 256      /* len of website, we can use it to get server ip */
 

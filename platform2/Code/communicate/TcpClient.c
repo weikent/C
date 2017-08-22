@@ -147,6 +147,9 @@ void *TcpClientRun(void *arg)
         continue;
       }
 
+      if (!g_isSubscribed) {
+        continue;
+      }
       char *result = NULL;
       len = mqttPublish(len, str, &result);
       if (g_serverIP[0] != 0 && g_serverPort != 0)

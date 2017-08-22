@@ -60,7 +60,7 @@ void *timer(void *args)
   while (1) {
     sem_wait(&g_semHasCommand);
 
-    usleep(1000);
+    usleep(5000);
 
     sem_post(&g_semNeedWait);
   }

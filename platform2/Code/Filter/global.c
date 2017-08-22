@@ -36,3 +36,16 @@ int msgID = 0;
 sem_t g_semNeedWait;
 sem_t g_semHasCommand;
 
+int g_shmid;
+int g_shmid;             //   share memory
+struct shared_use_st *g_sharedRead;      //
+struct shared_use_st *g_sharedWrite;     // 
+unsigned char g_sharedWriteBuf[SHARED_TEXT_SIZE + 1] = {0};
+unsigned char g_sharedReadBuf[SHARED_TEXT_SIZE + 1] = {0};
+pthread_mutex_t g_pthSharedWrite;
+
+//unsigned char g_serialMessageBuf[MAX_SERIAL_MSG_SIZE + 1] = {0};
+
+struct myMsgBuf g_msgReadMsgBuf;
+struct myMsgBuf g_msgWriteMsgBuf;
+pthread_mutex_t g_pthMsgWrite;
